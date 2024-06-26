@@ -16,19 +16,19 @@ const props = defineProps({
     role: Object
 })
 
-const current_role = ref({...props.role}).value
+const current_elements = ref({...props.role}).value
 
 const form = useForm({
-    name: current_role.name ?? '',
-    is_active: Boolean(current_role.status),
-    order_number: current_role.order_number ?? ''
+    name: current_elements.name ?? '',
+    is_active: Boolean(current_elements.status),
+    order_number: current_elements.order_number ?? ''
 });
 const openModal = () => {
     isOpeningModal.value = true;
 };
 
 const formSubmit = () => {
-    form.patch(route('roles.update', current_role.id), {
+    form.patch(route('roles.update', current_elements.id), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onFinish: () => form.reset()

@@ -121,7 +121,7 @@ const closeModal = () => {
                                 :class="{ 'opacity-25': form.processing }"
                                 :disabled="form.processing"
                             >
-                                Create User
+                                Save
                             </CustomButtonSubmit>
                         </div>
                     </form>

@@ -4,24 +4,18 @@ import InputLabel from '@/Components/InputLabel.vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { useForm } from '@inertiajs/vue3';
+import {Link, useForm} from '@inertiajs/vue3';
 import { ref } from 'vue';
+import CustomButtonCreate from "@/Components/CustomButtonCreate.vue";
 import CustomButtonSubmit from "@/Components/CustomButtonSubmit.vue";
-import CustomButtonEdit from "@/Components/CustomButtonEdit.vue";
+import Checkbox from "@/Components/Checkbox.vue";
 
 const isOpeningModal = ref(false);
 
-const props = defineProps({
-    user: Object
-})
-
-const current_elements = ref({...props.user}).value
-
 const form = useForm({
-    name: current_elements.name ?? '',
-    email: current_elements.email ?? '',
-    password: '',
-    password_confirmation: '',
+    name: '',
+    order_number: '',
+    is_active: false,
 });
 
 const openModal = () => {
@@ -29,7 +23,7 @@ const openModal = () => {
 };
 
 const formSubmit = () => {
-    form.patch(route('users.update', current_elements.id), {
+    form.post(route('links.store'), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onFinish: () => form.reset()
@@ -45,12 +39,12 @@ const closeModal = () => {
 <template>
     <section class="space-y-6">
 
-        <CustomButtonEdit @click="openModal">Edit</CustomButtonEdit>
+        <CustomButtonCreate @click="openModal">Create</CustomButtonCreate>
 
         <Modal :show="isOpeningModal" @close="closeModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900">
-                    User Edit
+                    Link Create
                 </h2>
 
                 <div class="mt-6">
@@ -72,50 +66,26 @@ const closeModal = () => {
                             <InputError class="mt-2" :message="form.errors.name" />
 
                         </div>
-                        <!-- Email -->
+                        <!-- Order Number -->
                         <div class="mb-4">
-                            <InputLabel for="email" value="Email" class="block text-sm font-semi-bold mb-2 text-gray-600" />
+                            <InputLabel for="order_number" value="Order Number" class="block text-sm font-semi-bold mb-2 text-gray-600" />
 
                             <TextInput
-                                id="email"
-                                type="email"
+                                id="order_number"
+                                type="text"
                                 class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0"
-                                v-model="form.email"
-                                required
-                                autocomplete="username"
+                                v-model="form.order_number"
+                                autocomplete="order_number"
                             />
 
-                            <InputError class="mt-2" :message="form.errors.email" />
+                            <InputError class="mt-2" :message="form.errors.order_number" />
                         </div>
-                        <!-- password -->
-                        <div class="mb-4">
-                            <InputLabel for="password" value="Password" class="block text-sm font-semi-bold mb-2 text-gray-600"/>
-
-                            <TextInput
-                                id="password"
-                                type="password"
-                                class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0"
-                                v-model="form.password"
-                                required
-                                autocomplete="new-password"
-                            />
-
-                            <InputError class="mt-2" :message="form.errors.password" />
-                        </div>
-                        <div class="mb-4">
-
-                            <InputLabel for="password_confirmation" value="Confirm Password" class="block text-sm font-semi-bold mb-2 text-gray-600" />
-
-                            <TextInput
-                                id="password_confirmation"
-                                type="password"
-                                class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0"
-                                v-model="form.password_confirmation"
-                                required
-                                autocomplete="new-password"
-                            />
-
-                            <InputError class="mt-2" :message="form.errors.password_confirmation" />
+                        <!-- checkbox -->
+                        <div class="flex justify-between">
+                            <div class="flex">
+                                <Checkbox name="remember" v-model:checked="form.is_active" class="shrink-0 mt-0.5 border-gray-200 rounded-[4px] text-blue-600 focus:ring-blue-500" />
+                                <label for="hs-default-checkbox" class="text-sm text-gray-600 ms-3">Is Active?</label>
+                            </div>
                         </div>
 
                         <!-- button -->
@@ -127,7 +97,7 @@ const closeModal = () => {
                                 :class="{ 'opacity-25': form.processing }"
                                 :disabled="form.processing"
                             >
-                                Update
+                                Save
                             </CustomButtonSubmit>
                         </div>
                     </form>

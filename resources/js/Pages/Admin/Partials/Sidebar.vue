@@ -61,6 +61,24 @@ import {router} from "@inertiajs/vue3";
                             </AdminSidebarLink>
                         </li>
 
+                        <li class="sidebar-item mb-2">
+                            <AdminSidebarLink
+                                class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
+                                :href="route('links.index')" :active="$page.component === 'Admin/Links/Index'"
+                            >
+                                <i class="fa-solid fa-link text-xl"></i> <span>Links</span>
+                            </AdminSidebarLink>
+                        </li>
+
+                        <li class="sidebar-item mb-2">
+                            <AdminSidebarLink
+                                class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
+                                :href="route('permissions.index')" :active="$page.component === 'Admin/Permission/Index'"
+                            >
+                                <i class="fa-solid fa-key text-xl"></i> <span>Permissions</span>
+                            </AdminSidebarLink>
+                        </li>
+
                     </ul>
                 </nav>
             </div>
