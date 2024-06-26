@@ -21,6 +21,6 @@ class UserSeeder extends Seeder
             'email' => 'dev.kartic@gmail.com',
         ]);
 
-        \App\Models\User::factory(999)->create();
+        \App\Models\User::factory(100000)->create();
     }
 }

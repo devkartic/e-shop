@@ -2,14 +2,12 @@
 
 namespace App\Models\Admin;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Role extends Model
+class Link extends Model
 {
     use HasFactory;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -17,25 +15,25 @@ class Role extends Model
      */
     protected $fillable = [
         'name',
+        'module_id',
+        'url',
+        'fa_icon',
+        'order_number',
         'status',
-        'order_number'
     ];
 
-
-    public static int $default_admin = 1;
-
     /**
-     * Get the users for the role.
+     * Get the module for the link.
      */
-    public function users(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function module()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(Module::class);
     }
 
     /**
-     * Get the users for the role.
+     * Get the permission for the link.
      */
-    public function permission(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function permission()
     {
         return $this->hasMany(Permission::class);
     }

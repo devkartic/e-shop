@@ -11,6 +11,14 @@ use Inertia\Inertia;
 
 class RoleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            PermissionController::permission_verify();
+            return $next($request);
+        });
+    }
     /**
      * Display a listing of the resource.
      */
