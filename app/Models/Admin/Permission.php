@@ -24,7 +24,7 @@ class Permission extends Model
     /**
      * Get the role for the permission.
      */
-    public function role()
+    public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Role::class);
     }
@@ -32,7 +32,7 @@ class Permission extends Model
     /**
      * Get the route for the permission.
      */
-    public function route()
+    public function route(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Route::class);
     }

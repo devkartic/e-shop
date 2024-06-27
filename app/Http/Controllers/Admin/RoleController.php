@@ -60,7 +60,7 @@ class RoleController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:' . Role::class,
-            'order_number' => 'integer',
+            'order_number' => 'integer|nullable',
         ]);
 
         Role::create([

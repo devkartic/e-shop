@@ -40,7 +40,7 @@ import {router} from "@inertiajs/vue3";
 
                         <li class="text-xs font-bold my-4">
                             <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
-                            <span>AUTH</span>
+                            <span>ACCESS CONTROL</span>
                         </li>
 
                         <li class="sidebar-item mb-2">
@@ -64,6 +64,15 @@ import {router} from "@inertiajs/vue3";
                         <li class="sidebar-item mb-2">
                             <AdminSidebarLink
                                 class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
+                                :href="route('modules.index')" :active="$page.component === 'Admin/Modules/Index'"
+                            >
+                                <i class="fa fa-info-circle text-xl"></i> <span>Modules</span>
+                            </AdminSidebarLink>
+                        </li>
+
+                        <li class="sidebar-item mb-2">
+                            <AdminSidebarLink
+                                class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
                                 :href="route('links.index')" :active="$page.component === 'Admin/Links/Index'"
                             >
                                 <i class="fa-solid fa-link text-xl"></i> <span>Links</span>
@@ -81,22 +90,6 @@ import {router} from "@inertiajs/vue3";
 
                     </ul>
                 </nav>
-            </div>
-        </div>
-
-        <!-- Bottom Upgrade Option -->
-        <div class="m-6 relative">
-            <div class="bg-blue-500 p-5 rounded-md flex items-center justify-between">
-                <div>
-                    <h5 class="text-base font-semi-bold text-gray-700 mb-3">Upgrade to Pro</h5>
-                    <button
-                        class="text-xs font-semi-bold hover:bg-blue-700 text-white bg-blue-600 rounded-md  px-4 py-2">
-                        Buy Pro
-                    </button>
-                </div>
-                <div class="-mt-12 -mr-2">
-                    <img src="/admin/images/profile/rocket.png" class="max-w-fit" alt="profile"/>
-                </div>
             </div>
         </div>
         <!-- </aside> -->

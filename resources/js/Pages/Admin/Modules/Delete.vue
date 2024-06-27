@@ -7,23 +7,23 @@ import { ref } from 'vue';
 import CustomButtonDelete from "@/Components/CustomButtonDelete.vue";
 
 const props = defineProps({
-    user: Object
+    module: Object
 })
 
-const current_element = ref({...props.user}).value
+const current_element= ref({...props.module}).value
 
-const confirmingUserDeletion = ref(false);
+const confirmingDeletion = ref(false);
 
 const form = useForm({
     id: current_element.id ?? '',
 });
 
-const confirmUserDeletion = () => {
-    confirmingUserDeletion.value = true;
+const confirmDeletion = () => {
+    confirmingDeletion.value = true;
 };
 
-const deleteUser = () => {
-    form.delete(route('users.destroy', current_element.id), {
+const deleteHandler = () => {
+    form.delete(route('modules.destroy', current_element.id), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onFinish: () => form.reset(),
@@ -31,24 +31,24 @@ const deleteUser = () => {
 };
 
 const closeModal = () => {
-    confirmingUserDeletion.value = false;
+    confirmingDeletion.value = false;
     form.reset();
 };
 </script>
 
 <template>
     <section class="space-y-6">
-        <CustomButtonDelete @click="confirmUserDeletion">Delete</CustomButtonDelete>
+        <CustomButtonDelete @click="confirmDeletion">Delete</CustomButtonDelete>
 
-        <Modal :show="confirmingUserDeletion" @close="closeModal">
+        <Modal :show="confirmingDeletion" @close="closeModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900">
-                    Are you sure you want to delete <b>{{current_element.name}}</b> account?
+                    Are you sure you want to delete <b>{{current_element.name}}</b> module?
                 </h2>
 
                 <p class="mt-1 text-sm text-gray-600">
-                    Once the account is deleted, all of its resources and data will be permanently deleted. Please
-                    confirm you would like to permanently delete the account.
+                    Once the module is deleted, all of its resources and data will be permanently deleted. Please
+                    confirm you would like to permanently delete the module.
                 </p>
 
                 <div class="mt-6 flex justify-end">
@@ -58,7 +58,7 @@ const closeModal = () => {
                         class="ms-3"
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
-                        @click="deleteUser"
+                        @click="deleteHandler"
                     >
                         Delete
                     </DangerButton>

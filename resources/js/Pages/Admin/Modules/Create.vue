@@ -14,9 +14,6 @@ const isOpeningModal = ref(false);
 
 const form = useForm({
     name: '',
-    url: '',
-    fa_icon: '',
-    module_id: '',
     order_number: '',
     is_active: false,
 });
@@ -26,7 +23,7 @@ const openModal = () => {
 };
 
 const formSubmit = () => {
-    form.post(route('links.store'), {
+    form.post(route('modules.store'), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onFinish: () => form.reset()
@@ -47,28 +44,15 @@ const closeModal = () => {
         <Modal :show="isOpeningModal" @close="closeModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900">
-                    Link Create
+                    Role Create
                 </h2>
 
                 <div class="mt-6">
                     <form @submit.prevent="formSubmit">
-                        <!-- Module -->
-                        <div class="mb-4">
-                            <InputLabel for="module_id" value="Module" class="block text-sm font-semi-bold mb-2 text-gray-600" />
-                            <TextInput
-                                id="module_id"
-                                type="text"
-                                class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0"
-                                v-model="form.module_id"
-                                required
-                                autofocus
-                                autocomplete="module_id"
-                            />
-                            <InputError class="mt-2" :message="form.errors.name" />
-                        </div>
-                        <!-- name -->
+                        <!-- username -->
                         <div class="mb-4">
                             <InputLabel for="name" value="Name" class="block text-sm font-semi-bold mb-2 text-gray-600" />
+
                             <TextInput
                                 id="name"
                                 type="text"
@@ -78,35 +62,9 @@ const closeModal = () => {
                                 autofocus
                                 autocomplete="name"
                             />
+
                             <InputError class="mt-2" :message="form.errors.name" />
-                        </div>
-                        <!-- url -->
-                        <div class="mb-4">
-                            <InputLabel for="url" value="URL" class="block text-sm font-semi-bold mb-2 text-gray-600" />
-                            <TextInput
-                                id="url"
-                                type="text"
-                                class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0"
-                                v-model="form.url"
-                                required
-                                autofocus
-                                autocomplete="url"
-                            />
-                            <InputError class="mt-2" :message="form.errors.url" />
-                        </div>
-                        <!-- fa icon -->
-                        <div class="mb-4">
-                            <InputLabel for="fa_icon" value="Fa-Icon" class="block text-sm font-semi-bold mb-2 text-gray-600" />
-                            <TextInput
-                                id="fa_icon"
-                                type="text"
-                                class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0"
-                                v-model="form.fa_icon"
-                                required
-                                autofocus
-                                autocomplete="fa_icon"
-                            />
-                            <InputError class="mt-2" :message="form.errors.fa_icon" />
+
                         </div>
                         <!-- Order Number -->
                         <div class="mb-4">

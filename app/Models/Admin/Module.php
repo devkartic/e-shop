@@ -24,7 +24,7 @@ class Module extends Model
     /**
      * Get the links for the module.
      */
-    public function links()
+    public function links(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Link::class);
     }

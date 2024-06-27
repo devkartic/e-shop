@@ -10,12 +10,12 @@ const props = defineProps({
     role: Object
 })
 
-const current_role = ref({...props.role}).value
+const current_element = ref({...props.role}).value
 
 const confirmingDeletion = ref(false);
 
 const form = useForm({
-    id: current_role.id ?? '',
+    id: current_element.id ?? '',
 });
 
 const confirmDeletion = () => {
@@ -23,7 +23,7 @@ const confirmDeletion = () => {
 };
 
 const deleteHandler = () => {
-    form.delete(route('roles.destroy', current_role.id), {
+    form.delete(route('links.destroy', current_element.id), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onFinish: () => form.reset(),
@@ -43,12 +43,12 @@ const closeModal = () => {
         <Modal :show="confirmingDeletion" @close="closeModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900">
-                    Are you sure you want to delete <b>{{current_role.name}}</b> role?
+                    Are you sure you want to delete <b>{{current_element.name}}</b> link?
                 </h2>
 
                 <p class="mt-1 text-sm text-gray-600">
-                    Once the role is deleted, all of its resources and data will be permanently deleted. Please
-                    confirm you would like to permanently delete the role.
+                    Once the link is deleted, all of its resources and data will be permanently deleted. Please
+                    confirm you would like to permanently delete the link.
                 </p>
 
                 <div class="mt-6 flex justify-end">

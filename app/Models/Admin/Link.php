@@ -25,7 +25,7 @@ class Link extends Model
     /**
      * Get the module for the link.
      */
-    public function module()
+    public function module(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Module::class);
     }
@@ -33,7 +33,7 @@ class Link extends Model
     /**
      * Get the permission for the link.
      */
-    public function permission()
+    public function permission(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Permission::class);
     }

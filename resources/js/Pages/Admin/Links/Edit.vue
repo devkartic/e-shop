@@ -13,22 +13,25 @@ import Checkbox from "@/Components/Checkbox.vue";
 const isOpeningModal = ref(false);
 
 const props = defineProps({
-    role: Object
+    link: Object
 })
 
-const current_elements = ref({...props.role}).value
+const current_element = ref({...props.link}).value
 
 const form = useForm({
-    name: current_elements.name ?? '',
-    is_active: Boolean(current_elements.status),
-    order_number: current_elements.order_number ?? ''
+    name: current_element.name ?? '',
+    module_id: current_element.module_id ?? '',
+    url: current_element.url ?? '',
+    fa_icon: current_element.fa_icon ?? '',
+    is_active: Boolean(current_element.status),
+    order_number: current_element.order_number ?? ''
 });
 const openModal = () => {
     isOpeningModal.value = true;
 };
 
 const formSubmit = () => {
-    form.patch(route('links.update', current_elements.id), {
+    form.patch(route('links.update', current_element.id), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onFinish: () => form.reset()
@@ -54,10 +57,23 @@ const closeModal = () => {
 
                 <div class="mt-6">
                     <form @submit.prevent="formSubmit">
-                        <!-- username -->
+                        <!-- Module -->
+                        <div class="mb-4">
+                            <InputLabel for="module_id" value="Module" class="block text-sm font-semi-bold mb-2 text-gray-600" />
+                            <TextInput
+                                id="module_id"
+                                type="text"
+                                class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0"
+                                v-model="form.module_id"
+                                required
+                                autofocus
+                                autocomplete="module_id"
+                            />
+                            <InputError class="mt-2" :message="form.errors.name" />
+                        </div>
+                        <!-- name -->
                         <div class="mb-4">
                             <InputLabel for="name" value="Name" class="block text-sm font-semi-bold mb-2 text-gray-600" />
-
                             <TextInput
                                 id="name"
                                 type="text"
@@ -67,9 +83,34 @@ const closeModal = () => {
                                 autofocus
                                 autocomplete="name"
                             />
-
                             <InputError class="mt-2" :message="form.errors.name" />
-
+                        </div>
+                        <!-- url -->
+                        <div class="mb-4">
+                            <InputLabel for="url" value="URL" class="block text-sm font-semi-bold mb-2 text-gray-600" />
+                            <TextInput
+                                id="url"
+                                type="text"
+                                class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0"
+                                v-model="form.url"
+                                required
+                                autofocus
+                                autocomplete="url"
+                            />
+                            <InputError class="mt-2" :message="form.errors.url" />
+                        </div>
+                        <!-- fa icon -->
+                        <div class="mb-4">
+                            <InputLabel for="fa_icon" value="Fa-Icon" class="block text-sm font-semi-bold mb-2 text-gray-600" />
+                            <TextInput
+                                id="fa_icon"
+                                type="text"
+                                class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0"
+                                v-model="form.fa_icon"
+                                autofocus
+                                autocomplete="name"
+                            />
+                            <InputError class="mt-2" :message="form.errors.fa_icon" />
                         </div>
                         <!-- Order Number -->
                         <div class="mb-4">

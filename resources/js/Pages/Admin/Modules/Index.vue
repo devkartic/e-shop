@@ -6,12 +6,12 @@ import {ref, vShow, watch} from "vue";
 import Pagination from "@/Pages/Admin/Partials/Pagination.vue";
 import CustomButtonInfo from "@/Components/CustomButtonInfo.vue";
 import CustomButton from "@/Components/CustomButton.vue";
-import Create from "@/Pages/Admin/Links/Create.vue";
-import Edit from "@/Pages/Admin/Links/Edit.vue";
-import Delete from "@/Pages/Admin/Links/Delete.vue";
+import Create from "@/Pages/Admin/Modules/Create.vue";
+import Edit from "@/Pages/Admin/Modules/Edit.vue";
+import Delete from "@/Pages/Admin/Modules/Delete.vue";
 
 let props = defineProps({
-    links: Object,
+    modules: Object,
     filters: Object,
     can: Object
 });
@@ -21,7 +21,7 @@ let search = ref(props.filters.search);
 watch(search, debounce(value => {
     // console.log('Changed ' + value);
     // console.log('triggered');
-    router.get('/links', {search: value}, {
+    router.get('/modules', {search: value}, {
         preserveState: true,
         replace: true
     });
@@ -56,16 +56,6 @@ const handleClear = () => search.value = '';
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div class="text-sm font-bold text-gray-600">Url</div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="text-sm font-bold text-gray-600">Fa Icon</div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
                                         <div class="text-sm font-bold text-gray-600">Status</div>
                                     </div>
                                 </td>
@@ -82,25 +72,11 @@ const handleClear = () => search.value = '';
                             </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                            <tr v-for="link in props.links.data" :key="link.id">
+                            <tr v-for="module in props.modules.data" :key="module.id">
                                 <td class="px-3 py-2 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div>
-                                            <div class="text-sm font-medium text-gray-900" v-text="link.name"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-3 py-2 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div>
-                                            <div class="text-sm font-medium text-gray-900" v-text="link.url"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-3 py-2 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div>
-                                            <div class="text-sm font-medium text-gray-900" v-text="link.fa_icon"></div>
+                                            <div class="text-sm font-medium text-gray-900" v-text="module.name"></div>
                                         </div>
                                     </div>
                                 </td>
@@ -108,8 +84,8 @@ const handleClear = () => search.value = '';
                                     <div class="flex items-center">
                                         <div>
                                             <div class="text-sm font-medium text-gray-900">
-                                                <span v-if="Boolean(link.status)" class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Active</span>
-                                                <span v-if="!Boolean(link.status)" class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Active</span>
+                                                <span v-if="Boolean(module.status)" class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Active</span>
+                                                <span v-if="!Boolean(module.status)" class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Active</span>
                                             </div>
                                         </div>
                                     </div>
@@ -118,16 +94,16 @@ const handleClear = () => search.value = '';
                                     <div class="flex items-center">
                                         <div>
                                             <div class="text-sm font-medium text-gray-900"
-                                                 v-text="link.order_number"></div>
+                                                 v-text="module.order_number"></div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-3 py-2 whitespace-nowrap text-sm font-medium flex justify-end gap-1">
-                                    <Link :href="`/users/${link.id}/edit`">
+                                    <Link :href="`/users/${module.id}/edit`">
                                         <CustomButtonInfo>Show</CustomButtonInfo>
                                     </Link>
-                                    <Edit :link="link"/>
-                                    <Delete :link="link"/>
+                                    <Edit :module="module"/>
+                                    <Delete :module="module"/>
                                 </td>
                             </tr>
                             </tbody>
@@ -137,7 +113,7 @@ const handleClear = () => search.value = '';
             </div>
         </div>
         <!--    Pagination-->
-        <Pagination :links="props.links.links" class="mt-6"/>
+        <Pagination :links="props.modules.links" class="mt-6"/>
     </AuthenticatedLayout>
 
 </template>
