@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Link;
+use App\Models\Admin\Module;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ class LinkController extends Controller
     public function index(Request $request): \Inertia\Response
     {
         return Inertia::render('Admin/Links/Index', [
+            'modules' => Module::all(),
             'links' => Link::query()
                 ->when($request->input('search'), function ($query, $search) {
                     $query->where('name', 'like', "%$search%")->orWhere('url', 'like', "%$search%");
@@ -42,7 +44,9 @@ class LinkController extends Controller
                 ->paginate(10)
                 ->withQueryString()
                 ->through(fn($link) => [
+                    'module_id' => $link->module_id,
                     'id' => $link->id,
+                    'module' => $link->molude,
                     'name' => $link->name,
                     'url' => $link->url,
                     'fa_icon' => $link->fa_icon,
@@ -75,7 +79,7 @@ class LinkController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'module_id' => ['required|integer'],
+            'module_id' => ['required', 'integer'],
             'name' => 'required|string|max:255|unique:' . Link::class,
             'url' => ['required', 'string'],
             'fa_icon' => ['nullable'],

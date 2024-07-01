@@ -13,6 +13,7 @@ import Checkbox from "@/Components/Checkbox.vue";
 const isOpeningModal = ref(false);
 
 const props = defineProps({
+    modules: Object,
     link: Object
 })
 
@@ -60,16 +61,11 @@ const closeModal = () => {
                         <!-- Module -->
                         <div class="mb-4">
                             <InputLabel for="module_id" value="Module" class="block text-sm font-semi-bold mb-2 text-gray-600" />
-                            <TextInput
-                                id="module_id"
-                                type="text"
-                                class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0"
-                                v-model="form.module_id"
-                                required
-                                autofocus
-                                autocomplete="module_id"
-                            />
-                            <InputError class="mt-2" :message="form.errors.name" />
+                            <select v-model="form.module_id" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0">
+                                <option value="">Select One</option>
+                                <option v-for="module in modules" :value="module.id">{{ module.name }}</option>
+                            </select>
+                            <InputError class="mt-2" :message="form.errors.module_id" />
                         </div>
                         <!-- name -->
                         <div class="mb-4">

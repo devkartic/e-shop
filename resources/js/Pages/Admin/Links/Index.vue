@@ -11,6 +11,7 @@ import Edit from "@/Pages/Admin/Links/Edit.vue";
 import Delete from "@/Pages/Admin/Links/Delete.vue";
 
 let props = defineProps({
+    modules: Object,
     links: Object,
     filters: Object,
     can: Object
@@ -40,7 +41,7 @@ const handleClear = () => search.value = '';
                        class="border-gray-200 px-2 rounded-s-lg focus:border-0"/>
                 <CustomButton class="bg-gray-200 rounded-e-lg text-gray-700" @click="handleClear">Clear</CustomButton>
             </div>
-            <Create/>
+            <Create :modules="modules"/>
         </div>
         <div class="flex flex-col mt-3">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -49,6 +50,11 @@ const handleClear = () => search.value = '';
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-white divide-y divide-gray-200">
                             <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="text-sm font-bold text-gray-600">Module</div>
+                                    </div>
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="text-sm font-bold text-gray-600">Name</div>
@@ -83,6 +89,13 @@ const handleClear = () => search.value = '';
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="link in props.links.data" :key="link.id">
+                                <td class="px-3 py-2 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900" v-text="link.module_name"></div>
+                                        </div>
+                                    </div>
+                                </td>
                                 <td class="px-3 py-2 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div>
@@ -126,7 +139,7 @@ const handleClear = () => search.value = '';
                                     <Link :href="`/users/${link.id}/edit`">
                                         <CustomButtonInfo>Show</CustomButtonInfo>
                                     </Link>
-                                    <Edit :link="link"/>
+                                    <Edit :link="link" :modules="modules"/>
                                     <Delete :link="link"/>
                                 </td>
                             </tr>
