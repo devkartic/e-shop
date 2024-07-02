@@ -22,7 +22,7 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): \Inertia\Response
     {
         return Inertia::render('Admin/Roles/Index', [
             'roles' => Role::query()

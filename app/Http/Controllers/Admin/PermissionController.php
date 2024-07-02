@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\CacheRepositories\Menus;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Link;
 use App\Models\Admin\Permission;
@@ -10,7 +9,9 @@ use App\Models\Admin\Role;
 use App\Models\Admin\Route;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class PermissionController extends Controller
 {
@@ -18,7 +19,7 @@ class PermissionController extends Controller
     /**
      * Check permission for routs, roles, links.
      *
-     * @return \Illuminate\Http\Response or exception
+     * @return Response or exception
      */
     public function __construct()
     {
@@ -31,19 +32,36 @@ class PermissionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
-    public function index()
+    public function index(Request $request): \Inertia\Response
     {
-        $roles = Role::all();
-        return view('admin.layouts.permissions.index', compact('roles'));
+        return Inertia::render('Admin/Permissions/Index', [
+            'roles' => Role::query()
+                ->when($request->input('search'), function ($query, $search) {
+                    $query->where('name', 'like', "%$search%");
+                })
+                ->orderBy('id', 'desc')
+                ->paginate(10)
+                ->withQueryString()
+                ->through(fn($role) => [
+                    'id' => $role->id,
+                    'name' => $role->name,
+                    'status' => $role->status,
+                    'order_number' => $role->order_number
+                ]),
+            'filters' => $request->only(['search']),
+            'can' => [
+                'createUser' => Auth::user()->can('create', User::class)
+            ]
+        ]);
     }
 
     /**
      * Get the specified resource from storage.
      *
-     * @param \App\Models\Admin\Permission $permission
-     * @return \Illuminate\Http\Response
+     * @param Permission $permission
+     * @return Response
      */
     public function get_permissions(Request $request): string
     {
@@ -68,8 +86,8 @@ class PermissionController extends Controller
     /**
      * Create or remove the specified permission for specified roles, links and routes.
      *
-     * @param \App\Models\Admin\Permission $permission
-     * @return \Illuminate\Http\Response
+     * @param Permission $permission
+     * @return Response
      */
     public function permission_handler(Request $request): bool
     {
@@ -96,8 +114,8 @@ class PermissionController extends Controller
     /**
      * Verify the specified permission for specified roles, links and routes.
      *
-     * @param \App\Models\Admin\Permission $permission
-     * @return \Illuminate\Http\Response
+     * @param Permission $permission
+     * @return Response
      */
     public static function permission_verify(): bool
     {
