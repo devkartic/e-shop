@@ -27,7 +27,7 @@ const isOpen = ref(true);
                 <nav class=" w-full flex flex-col sidebar-nav">
                     <ul class="text-gray-600 text-sm">
                         <li>
-                            <div type="button" class="bg-white hover:bg-gray-100 font-semibold py-2 px-2 rounded flex justify-between align-middle">
+                            <div type="button" class="bg-white hover:bg-gray-100 font-semibold py-2 px-2 mb-1 rounded flex justify-between align-middle">
                                 <div>
                                     <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
                                     <span>HOME</span>
@@ -48,7 +48,7 @@ const isOpen = ref(true);
                             </ul>
                         </li>
                         <li>
-                            <div type="button" class="bg-white hover:bg-gray-100 font-semibold py-2 px-2 rounded flex justify-between align-middle">
+                            <div type="button" class="bg-white hover:bg-gray-100 font-semibold py-2 px-2 mb-1 rounded flex justify-between align-middle">
                                 <div>
                                     <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
                                     <span>ACCESS CONTROL</span>
@@ -58,7 +58,7 @@ const isOpen = ref(true);
                                 </div>
                             </div>
                             <ul v-if="isOpen" class="text-gray-600 text-sm">
-                                <li class="sidebar-item mb-2">
+                                <li class="sidebar-item mb-1">
                                     <AdminSidebarLink
                                         class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
                                         :href="route('roles.index')" :active="$page.component === 'Admin/Roles/Index'"
@@ -67,7 +67,7 @@ const isOpen = ref(true);
                                     </AdminSidebarLink>
                                 </li>
 
-                                <li class="sidebar-item mb-2">
+                                <li class="sidebar-item mb-1">
                                     <AdminSidebarLink
                                         class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
                                         :href="route('users.index')" :active="$page.component === 'Admin/Users/Index'"
@@ -76,7 +76,7 @@ const isOpen = ref(true);
                                     </AdminSidebarLink>
                                 </li>
 
-                                <li class="sidebar-item mb-2">
+                                <li class="sidebar-item mb-1">
                                     <AdminSidebarLink
                                         class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
                                         :href="route('modules.index')" :active="$page.component === 'Admin/Modules/Index'"
@@ -85,7 +85,7 @@ const isOpen = ref(true);
                                     </AdminSidebarLink>
                                 </li>
 
-                                <li class="sidebar-item mb-2">
+                                <li class="sidebar-item mb-1">
                                     <AdminSidebarLink
                                         class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
                                         :href="route('links.index')" :active="$page.component === 'Admin/Links/Index'"
@@ -94,7 +94,7 @@ const isOpen = ref(true);
                                     </AdminSidebarLink>
                                 </li>
 
-                                <li class="sidebar-item mb-2">
+                                <li class="sidebar-item mb-1">
                                     <AdminSidebarLink
                                         class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
                                         :href="route('permissions.index')"
