@@ -1,7 +1,9 @@
 <script setup>
-import NavLink from "@/Components/NavLink.vue";
 import AdminSidebarLink from "@/Components/AdminSidebarLink.vue";
-import {router} from "@inertiajs/vue3";
+import {ref} from "vue";
+
+const isOpen = ref(true);
+
 
 
 </script>
@@ -23,71 +25,87 @@ import {router} from "@inertiajs/vue3";
         <div class="scroll-sidebar" data-simplebar="">
             <div class="px-6 my-3">
                 <nav class=" w-full flex flex-col sidebar-nav">
-                    <ul id="sidebarnav" class="text-gray-600 text-sm">
-                        <li class="text-xs font-bold pb-4">
-                            <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
-                            <span>HOME</span>
+                    <ul class="text-gray-600 text-sm">
+                        <li>
+                            <div type="button" class="bg-white hover:bg-gray-100 font-semibold py-2 px-2 rounded flex justify-between align-middle">
+                                <div>
+                                    <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
+                                    <span>HOME</span>
+                                </div>
+                                <div>
+                                    <i class="fa-solid fa-angle-up"></i>
+                                </div>
+                            </div>
+                            <ul v-if="isOpen" class="text-gray-600 text-sm">
+                                <li class="sidebar-item">
+                                    <AdminSidebarLink
+                                        class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
+                                        :href="route('dashboard')" :active="$page.component === 'Admin/Dashboard'"
+                                    >
+                                        <i class="ti ti-layout-dashboard text-xl"></i> <span>Dashboard</span>
+                                    </AdminSidebarLink>
+                                </li>
+                            </ul>
                         </li>
+                        <li>
+                            <div type="button" class="bg-white hover:bg-gray-100 font-semibold py-2 px-2 rounded flex justify-between align-middle">
+                                <div>
+                                    <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
+                                    <span>ACCESS CONTROL</span>
+                                </div>
+                                <div>
+                                    <i class="fa-solid fa-angle-up"></i>
+                                </div>
+                            </div>
+                            <ul v-if="isOpen" class="text-gray-600 text-sm">
+                                <li class="sidebar-item mb-2">
+                                    <AdminSidebarLink
+                                        class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
+                                        :href="route('roles.index')" :active="$page.component === 'Admin/Roles/Index'"
+                                    >
+                                        <i class="fa-brands fa-critical-role text-xl"></i> <span>Roles</span>
+                                    </AdminSidebarLink>
+                                </li>
 
-                        <li class="sidebar-item">
-                            <AdminSidebarLink
-                                class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
-                                :href="route('dashboard')" :active="$page.component === 'Admin/Dashboard'"
-                            >
-                                <i class="ti ti-layout-dashboard text-xl"></i> <span>Dashboard</span>
-                            </AdminSidebarLink>
+                                <li class="sidebar-item mb-2">
+                                    <AdminSidebarLink
+                                        class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
+                                        :href="route('users.index')" :active="$page.component === 'Admin/Users/Index'"
+                                    >
+                                        <i class="fa-solid fa-users text-xl"></i> <span>Users</span>
+                                    </AdminSidebarLink>
+                                </li>
+
+                                <li class="sidebar-item mb-2">
+                                    <AdminSidebarLink
+                                        class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
+                                        :href="route('modules.index')" :active="$page.component === 'Admin/Modules/Index'"
+                                    >
+                                        <i class="fa fa-info-circle text-xl"></i> <span>Modules</span>
+                                    </AdminSidebarLink>
+                                </li>
+
+                                <li class="sidebar-item mb-2">
+                                    <AdminSidebarLink
+                                        class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
+                                        :href="route('links.index')" :active="$page.component === 'Admin/Links/Index'"
+                                    >
+                                        <i class="fa-solid fa-link text-xl"></i> <span>Links</span>
+                                    </AdminSidebarLink>
+                                </li>
+
+                                <li class="sidebar-item mb-2">
+                                    <AdminSidebarLink
+                                        class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
+                                        :href="route('permissions.index')"
+                                        :active="$page.component === 'Admin/Permission/Index'"
+                                    >
+                                        <i class="fa-solid fa-key text-xl"></i> <span>Permissions</span>
+                                    </AdminSidebarLink>
+                                </li>
+
+                            </ul>
                         </li>
-
-                        <li class="text-xs font-bold my-4">
-                            <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
-                            <span>ACCESS CONTROL</span>
-                        </li>
-
-                        <li class="sidebar-item mb-2">
-                            <AdminSidebarLink
-                                class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
-                                :href="route('roles.index')" :active="$page.component === 'Admin/Roles/Index'"
-                            >
-                                <i class="fa-brands fa-critical-role text-xl"></i> <span>Roles</span>
-                            </AdminSidebarLink>
-                        </li>
-
-                        <li class="sidebar-item mb-2">
-                            <AdminSidebarLink
-                                class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
-                                :href="route('users.index')" :active="$page.component === 'Admin/Users/Index'"
-                            >
-                                <i class="fa-solid fa-users text-xl"></i> <span>Users</span>
-                            </AdminSidebarLink>
-                        </li>
-
-                        <li class="sidebar-item mb-2">
-                            <AdminSidebarLink
-                                class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
-                                :href="route('modules.index')" :active="$page.component === 'Admin/Modules/Index'"
-                            >
-                                <i class="fa fa-info-circle text-xl"></i> <span>Modules</span>
-                            </AdminSidebarLink>
-                        </li>
-
-                        <li class="sidebar-item mb-2">
-                            <AdminSidebarLink
-                                class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
-                                :href="route('links.index')" :active="$page.component === 'Admin/Links/Index'"
-                            >
-                                <i class="fa-solid fa-link text-xl"></i> <span>Links</span>
-                            </AdminSidebarLink>
-                        </li>
-
-                        <li class="sidebar-item mb-2">
-                            <AdminSidebarLink
-                                class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
-                                :href="route('permissions.index')" :active="$page.component === 'Admin/Permission/Index'"
-                            >
-                                <i class="fa-solid fa-key text-xl"></i> <span>Permissions</span>
-                            </AdminSidebarLink>
-                        </li>
-
                     </ul>
                 </nav>
             </div>
