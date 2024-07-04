@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\CacheRepositories\Modules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
@@ -35,10 +36,11 @@ class HandleInertiaRequests extends Middleware
             'auth' => Auth::user() ? [
                 'user' => [
                     'username' => Auth::user()->name
-                ]
-            ]: null,
+                ],
+            'modules' => Modules::verified_modules('order_number'),
+            ] : null,
             'flash' => [
-                'message' => fn () => $request->session()->get('message')
+                'message' => fn() => $request->session()->get('message')
             ],
         ];
     }

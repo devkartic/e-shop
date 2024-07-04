@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\CacheRepositories\Modules;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Link;
 use App\Models\Admin\Permission;
@@ -107,7 +108,7 @@ class PermissionController extends Controller
         } else {
             if ($find_permission->first()) $find_permission->delete();
         }
-        Menus::cache_forget($role_id);
+        Modules::cache_forget($role_id);
         return true;
     }
 

@@ -30,7 +30,7 @@ const isOpen = ref(true);
                             <div type="button" class="bg-white hover:bg-gray-100 font-semibold py-2 px-2 mb-1 rounded flex justify-between align-middle">
                                 <div>
                                     <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
-                                    <span>HOME</span>
+                                    <span class="uppercase">HOME</span>
                                 </div>
                                 <div>
                                     <i class="fa-solid fa-angle-up"></i>
@@ -51,7 +51,7 @@ const isOpen = ref(true);
                             <div type="button" class="bg-white hover:bg-gray-100 font-semibold py-2 px-2 mb-1 rounded flex justify-between align-middle">
                                 <div>
                                     <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
-                                    <span>ACCESS CONTROL</span>
+                                    <span class="uppercase">ACCESS CONTROL</span>
                                 </div>
                                 <div>
                                     <i class="fa-solid fa-angle-up"></i>
