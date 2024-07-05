@@ -37,24 +37,10 @@ class PermissionController extends Controller
      */
     public function index(Request $request): \Inertia\Response
     {
+        $role_id = $request->input('role_id');
         return Inertia::render('Admin/Permissions/Index', [
-            'roles' => Role::query()
-                ->when($request->input('search'), function ($query, $search) {
-                    $query->where('name', 'like', "%$search%");
-                })
-                ->orderBy('id', 'desc')
-                ->paginate(10)
-                ->withQueryString()
-                ->through(fn($role) => [
-                    'id' => $role->id,
-                    'name' => $role->name,
-                    'status' => $role->status,
-                    'order_number' => $role->order_number
-                ]),
-            'filters' => $request->only(['search']),
-            'can' => [
-                'createUser' => Auth::user()->can('create', User::class)
-            ]
+            'roles' => Role::all(),
+            'permissions' => $role_id ? $this->get_permissions($role_id) : null
         ]);
     }
 
@@ -64,24 +50,16 @@ class PermissionController extends Controller
      * @param Permission $permission
      * @return Response
      */
-    public function get_permissions(Request $request): string
+    public function get_permissions($role_id): string
     {
-        $role_id = $request->input('role_id');
-
-        $role = Role::find($role_id);
-
-        if ($role) $role = $role->name;
-
         $links = Link::all();
-
         foreach ($links as $link) {
             $link->view = Permission::has_permission($link->id, 'index', $role_id);
             $link->create = Permission::has_permission($link->id, 'create', $role_id);
             $link->edit = Permission::has_permission($link->id, 'edit', $role_id);
             $link->destroy = Permission::has_permission($link->id, 'destroy', $role_id);
         }
-
-        return view('admin.layouts.permissions.show', compact('role', 'links'));
+        return  $links;
     }
 
     /**
