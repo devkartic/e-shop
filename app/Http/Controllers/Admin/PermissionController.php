@@ -9,6 +9,7 @@ use App\Models\Admin\Permission;
 use App\Models\Admin\Role;
 use App\Models\Admin\Route;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -40,7 +41,7 @@ class PermissionController extends Controller
         $role_id = $request->input('role_id');
         return Inertia::render('Admin/Permissions/Index', [
             'roles' => Role::all(),
-            'permissions' => $role_id ? $this->get_permissions($role_id) : null
+            'links' => $role_id ? $this->get_permissions($role_id) : null
         ]);
     }
 
@@ -48,13 +49,13 @@ class PermissionController extends Controller
      * Get the specified resource from storage.
      *
      * @param Permission $permission
-     * @return Response
+     * @return Collection
      */
-    public function get_permissions($role_id): string
+    public function get_permissions($role_id): Collection
     {
         $links = Link::all();
         foreach ($links as $link) {
-            $link->view = Permission::has_permission($link->id, 'index', $role_id);
+            $link->index = Permission::has_permission($link->id, 'index', $role_id);
             $link->create = Permission::has_permission($link->id, 'create', $role_id);
             $link->edit = Permission::has_permission($link->id, 'edit', $role_id);
             $link->destroy = Permission::has_permission($link->id, 'destroy', $role_id);
