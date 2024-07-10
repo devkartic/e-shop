@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use JetBrains\PhpStorm\NoReturn;
 
 class PermissionController extends Controller
 {
@@ -38,10 +39,13 @@ class PermissionController extends Controller
      */
     public function index(Request $request): \Inertia\Response
     {
-        $role_id = $request->input('role_id');
+        $role_id = $request->input('role_id')?: Auth::user()->role_id;
         return Inertia::render('Admin/Permissions/Index', [
             'roles' => Role::all(),
-            'links' => $role_id ? $this->get_permissions($role_id) : null
+            'filters' => [
+                'role' => $role_id ? Role::find($role_id) : [],
+                'data' => $role_id ? $this->get_permissions($role_id) : null
+            ]
         ]);
     }
 
@@ -60,21 +64,28 @@ class PermissionController extends Controller
             $link->edit = Permission::has_permission($link->id, 'edit', $role_id);
             $link->destroy = Permission::has_permission($link->id, 'destroy', $role_id);
         }
-        return  $links;
+        return $links;
     }
 
     /**
      * Create or remove the specified permission for specified roles, links and routes.
      *
      * @param Permission $permission
-     * @return Response
+     * @return \Inertia\Response
      */
-    public function permission_handler(Request $request): bool
+    public function update($link_id, Request $request): \Inertia\Response
     {
         $role_id = $request->input('role_id');
-        if ($role_id == Role::$default_admin) die(); // Supper Admin checked and terminate
-        $link_id = $request->input('link_id');
-        $is_checked = filter_var($request->input('is_checked'), FILTER_VALIDATE_BOOLEAN);
+        if ($role_id == Role::$default_admin) {
+            die();
+        } // Supper Admin checked and terminate
+        $index = filter_var($request->input('index'), FILTER_VALIDATE_BOOLEAN);
+        $create = filter_var($request->input('create'), FILTER_VALIDATE_BOOLEAN);
+        $edit = filter_var($request->input('edit'), FILTER_VALIDATE_BOOLEAN);
+        $destroy = filter_var($request->input('destroy'), FILTER_VALIDATE_BOOLEAN);
+
+        dd($request->input());
+
         $route_id = Route::where('name', '=', $request->input('route_name'))->first()->id;
         $find_permission = Permission::where(['role_id' => $role_id, 'link_id' => $link_id, 'route_id' => $route_id]);
 
@@ -85,7 +96,9 @@ class PermissionController extends Controller
                 'route_id' => $route_id
             ]);
         } else {
-            if ($find_permission->first()) $find_permission->delete();
+            if ($find_permission->first()) {
+                $find_permission->delete();
+            }
         }
         Modules::cache_forget($role_id);
         return true;
@@ -104,10 +117,14 @@ class PermissionController extends Controller
         $route_resource_name_array = explode('.', request()->route()->getName());
         $link_name = $route_resource_name_array[0];
         $has_link = Link::where('url', $link_name)->first();
-        if ($has_link) $link_id = $has_link->id;
+        if ($has_link) {
+            $link_id = $has_link->id;
+        }
         $route_name = self::routes_verify($route_resource_name_array[1]);
         $hasPermission = Permission::has_permission($link_id, $route_name);
-        if ($hasPermission) return true;
+        if ($hasPermission) {
+            return true;
+        }
         abort(403, 'Access Forbidden!');
     }
 
@@ -123,9 +140,15 @@ class PermissionController extends Controller
 
     public static function initial_verification($user): object
     {
-        if(User::verify_default_admin()) return $user;
-        if (empty(Auth::user()->email_verified_at)) abort(403, 'Access Unauthorized! Email not verified.');
-        if (empty(Auth::user()->status)) abort(403, 'Access Forbidden! Profile has been disabled.');
+        if (User::verify_default_admin()) {
+            return $user;
+        }
+        if (empty(Auth::user()->email_verified_at)) {
+            abort(403, 'Access Unauthorized! Email not verified.');
+        }
+        if (empty(Auth::user()->status)) {
+            abort(403, 'Access Forbidden! Profile has been disabled.');
+        }
         return $user;
     }
 

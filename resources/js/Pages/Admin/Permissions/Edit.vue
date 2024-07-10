@@ -1,9 +1,6 @@
 <script setup>
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import {useForm} from '@inertiajs/vue3';
 import {ref} from 'vue';
 import CustomButtonSubmit from "@/Components/CustomButtonSubmit.vue";
@@ -13,13 +10,14 @@ import Checkbox from "@/Components/Checkbox.vue";
 const isOpeningModal = ref(false);
 
 const props = defineProps({
+    role: Object,
     link: Object
 })
 
 const current_elements = ref({...props.link}).value
 
 const form = useForm({
-    link_id: current_elements.link_id,
+    role_id: props.role.id,
     index: Boolean(current_elements.index) ?? false,
     create: Boolean(current_elements.create) ?? false,
     edit: Boolean(current_elements.edit) ?? false,
@@ -31,7 +29,7 @@ const openModal = () => {
 
 const formSubmit = () => {
     form.patch(route('permissions.update', current_elements.id), {
-        preserveScroll: true,
+        preserveState: true,
         onSuccess: () => closeModal(),
         onFinish: () => form.reset()
     });
@@ -51,7 +49,7 @@ const closeModal = () => {
         <Modal :show="isOpeningModal" @close="closeModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900">
-                    Permission Edit for <span class="text-red-500">{{ current_elements.name }}</span>
+                    <span class="text-red-500">{{ props.role.name }}</span> Permission Edit for <span class="text-red-500">{{ current_elements.name }}</span> feature
                 </h2>
 
                 <div class="mt-3">
@@ -72,7 +70,7 @@ const closeModal = () => {
                                 </td>
                                 <td class="px-3 py-2 border border-200">
                                     <div class="flex justify-center">
-                                        <div class="text-sm font-bold text-gray-600">Update</div>
+                                        <div class="text-sm font-bold text-gray-600">Update {{  current_elements.role_id }}</div>
                                     </div>
                                 </td>
                                 <td class="px-3 py-2 border border-200">

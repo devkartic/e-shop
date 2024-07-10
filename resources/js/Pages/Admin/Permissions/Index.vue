@@ -4,10 +4,11 @@ import {Head, router, useForm} from '@inertiajs/vue3';
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import Edit from "@/Pages/Admin/Permissions/Edit.vue";
+import PermissionLockOpen from "@/Components/PermissionLockOpen.vue";
 
 let props = defineProps({
     roles: Object,
-    links: Object
+    filters: Object
 });
 
 const form = useForm({
@@ -18,7 +19,6 @@ const onchangeHandler = () => {
     router.get('/permissions', {role_id: form.role_id}, {
         preserveState: true,
         replace: true,
-        onFinish: useForm.reset
     });
 };
 
@@ -39,14 +39,13 @@ const onchangeHandler = () => {
                         <option value="">Select One</option>
                         <option v-for="role in props.roles" :value="role.id">{{ role.name }}</option>
                     </select>
-                    <InputError class="mt-2" :message="form.errors.role_id"/>
                 </div>
             </form>
         </div>
 
         <div class="flex flex-col mt-3">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div v-if="props.links" class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div v-if="props.filters.data" class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <div class="shadow overflow-hidden border-b border-gray-200 lg:rounded-lg">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-white divide-y divide-gray-200">
@@ -84,7 +83,7 @@ const onchangeHandler = () => {
                             </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                            <tr v-for="link in props.links" :key="link.id">
+                            <tr v-for="link in props.filters.data" :key="link.id">
                                 <td class="px-3 py-2 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div>
@@ -94,41 +93,27 @@ const onchangeHandler = () => {
                                 </td>
                                 <td class="px-3 py-2 whitespace-nowrap">
                                     <div class="flex justify-center items-center">
-                                        <div>
-                                            <i v-if="Boolean(link.index)" class="fa-solid fa-lock-open text-2xl text-green-700"></i>
-                                            <i v-else class="fa-solid fa-lock text-2xl text-red-700"></i>
-                                        </div>
+                                        <PermissionLockOpen :permission="link.index"/>
                                     </div>
                                 </td>
                                 <td class="px-3 py-2 whitespace-nowrap">
                                     <div class="flex justify-center items-center">
-                                        <div>
-                                            <i v-if="Boolean(link.create)" class="fa-solid fa-lock-open text-2xl text-green-700"></i>
-                                            <i v-else class="fa-solid fa-lock text-2xl text-red-700"></i>
-                                        </div>
+                                        <PermissionLockOpen :permission="link.create"/>
                                     </div>
                                 </td>
                                 <td class="px-3 py-2 whitespace-nowrap">
                                     <div class="flex justify-center items-center">
-                                        <div>
-                                            <i v-if="Boolean(link.edit)" class="fa-solid fa-lock-open text-2xl text-green-700"></i>
-                                            <i v-else class="fa-solid fa-lock text-2xl text-red-700"></i>
-                                        </div>
+                                        <PermissionLockOpen :permission="link.edit"/>
                                     </div>
                                 </td>
                                 <td class="px-3 py-2 whitespace-nowrap">
                                     <div class="flex justify-center items-center">
-                                        <div>
-                                            <i v-if="Boolean(link.destroy)" class="fa-solid fa-lock-open text-2xl text-green-700"></i>
-                                            <i v-else class="fa-solid fa-lock text-2xl text-red-700"></i>
-                                        </div>
+                                        <PermissionLockOpen :permission="link.destroy"/>
                                     </div>
                                 </td>
                                 <td class="px-3 py-2 whitespace-nowrap">
                                     <div class="flex justify-center items-center">
-                                        <div>
-                                            <Edit :link="link"/>
-                                        </div>
+                                        <Edit :link="link" :role="props.filters.role"/>
                                     </div>
                                 </td>
                             </tr>
