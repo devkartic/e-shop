@@ -10,6 +10,7 @@ use App\Models\Admin\Role;
 use App\Models\Admin\Route;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -71,37 +72,49 @@ class PermissionController extends Controller
      * Create or remove the specified permission for specified roles, links and routes.
      *
      * @param Permission $permission
-     * @return \Inertia\Response
+     * @return RedirectResponse
      */
-    public function update($link_id, Request $request): \Inertia\Response
+    public function update($link_id, Request $request): RedirectResponse
     {
         $role_id = $request->input('role_id');
         if ($role_id == Role::$default_admin) {
-            die();
+            abort(403, 'Access Forbidden!');
         } // Supper Admin checked and terminate
+
+        $link_id = $request->input('link_id');
         $index = filter_var($request->input('index'), FILTER_VALIDATE_BOOLEAN);
         $create = filter_var($request->input('create'), FILTER_VALIDATE_BOOLEAN);
         $edit = filter_var($request->input('edit'), FILTER_VALIDATE_BOOLEAN);
         $destroy = filter_var($request->input('destroy'), FILTER_VALIDATE_BOOLEAN);
 
-        dd($request->input());
+        $index_route = Route::where('name', '=', 'index')->first();
+        $create_route = Route::where('name', '=', 'create')->first();
+        $edit_route = Route::where('name', '=', 'edit')->first();
+        $destroy_route = Route::where('name', '=', 'destroy')->first();
 
-        $route_id = Route::where('name', '=', $request->input('route_name'))->first()->id;
-        $find_permission = Permission::where(['role_id' => $role_id, 'link_id' => $link_id, 'route_id' => $route_id]);
+        $index_route->permission = $index;
+        $create_route->permission = $create;
+        $edit_route->permission = $edit;
+        $destroy_route->permission = $destroy;
 
-        if ($is_checked) {
-            Permission::create([
-                'role_id' => $role_id,
-                'link_id' => $link_id,
-                'route_id' => $route_id
-            ]);
-        } else {
-            if ($find_permission->first()) {
-                $find_permission->delete();
+        $permissions_routes = array($index_route, $create_route, $edit_route, $destroy_route);
+
+        foreach ($permissions_routes as $route){
+            $find_permission = Permission::where(['role_id' => $role_id, 'link_id' => $link_id, 'route_id' => $route->id]);
+            if ($route->permission && $find_permission) {
+                Permission::create([
+                    'role_id' => $role_id,
+                    'link_id' => $link_id,
+                    'route_id' => $route->id
+                ]);
+            } else {
+                if ($find_permission) $find_permission->delete();
             }
         }
+
         Modules::cache_forget($role_id);
-        return true;
+
+        return redirect()->route('permissions.index', ['role_id'=> $role_id])->with('message', "Permission updated successfully!");
     }
 
     /**

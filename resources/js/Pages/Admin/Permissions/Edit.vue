@@ -16,8 +16,9 @@ const props = defineProps({
 
 const current_elements = ref({...props.link}).value
 
-const form = useForm({
+const formPermission = useForm({
     role_id: props.role.id,
+    link_id: props.link.id,
     index: Boolean(current_elements.index) ?? false,
     create: Boolean(current_elements.create) ?? false,
     edit: Boolean(current_elements.edit) ?? false,
@@ -28,7 +29,7 @@ const openModal = () => {
 };
 
 const formSubmit = () => {
-    form.patch(route('permissions.update', current_elements.id), {
+    formPermission.patch(route('permissions.update', current_elements.id), {
         preserveState: true,
         onSuccess: () => closeModal(),
         onFinish: () => form.reset()
@@ -49,7 +50,7 @@ const closeModal = () => {
         <Modal :show="isOpeningModal" @close="closeModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900">
-                    <span class="text-red-500">{{ props.role.name }}</span> Permission Edit for <span class="text-red-500">{{ current_elements.name }}</span> feature
+                    <span class="text-red-500">{{ props.role.name }}</span> permissions edit for <span class="text-red-500">{{ current_elements.name }}</span> feature
                 </h2>
 
                 <div class="mt-3">
@@ -70,7 +71,7 @@ const closeModal = () => {
                                 </td>
                                 <td class="px-3 py-2 border border-200">
                                     <div class="flex justify-center">
-                                        <div class="text-sm font-bold text-gray-600">Update {{  current_elements.role_id }}</div>
+                                        <div class="text-sm font-bold text-gray-600">Update</div>
                                     </div>
                                 </td>
                                 <td class="px-3 py-2 border border-200">
@@ -84,25 +85,25 @@ const closeModal = () => {
                             <tr>
                                 <td class="px-3 py-2 border border-200">
                                     <div class="flex justify-center items-center">
-                                        <Checkbox name="index" v-model:checked="form.index"
+                                        <Checkbox name="index" v-model:checked="formPermission.index"
                                                   class="shrink-0 mt-0.5 border-gray-200 rounded-[4px] text-blue-600 focus:ring-blue-500"/>
                                     </div>
                                 </td>
                                 <td class="px-3 py-2 border border-200">
                                     <div class="flex justify-center items-center">
-                                        <Checkbox name="create" v-model:checked="form.create"
+                                        <Checkbox name="create" v-model:checked="formPermission.create"
                                                   class="shrink-0 mt-0.5 border-gray-200 rounded-[4px] text-blue-600 focus:ring-blue-500"/>
                                     </div>
                                 </td>
                                 <td class="px-3 py-2 border border-200">
                                     <div class="flex justify-center items-center">
-                                        <Checkbox name="edit" v-model:checked="form.edit"
+                                        <Checkbox name="edit" v-model:checked="formPermission.edit"
                                                   class="shrink-0 mt-0.5 border-gray-200 rounded-[4px] text-blue-600 focus:ring-blue-500"/>
                                     </div>
                                 </td>
                                 <td class="px-3 py-2 border border-200">
                                     <div class="flex justify-center items-center">
-                                        <Checkbox name="destory" v-model:checked="form.destroy"
+                                        <Checkbox name="destory" v-model:checked="formPermission.destroy"
                                                   class="shrink-0 mt-0.5 border-gray-200 rounded-[4px] text-blue-600 focus:ring-blue-500"/>
                                     </div>
                                 </td>
@@ -116,8 +117,8 @@ const closeModal = () => {
 
                             <CustomButtonSubmit
                                 class="ms-3"
-                                :class="{ 'opacity-25': form.processing }"
-                                :disabled="form.processing"
+                                :class="{ 'opacity-25': formPermission.processing }"
+                                :disabled="formPermission.processing"
                             >
                                 Update
                             </CustomButtonSubmit>

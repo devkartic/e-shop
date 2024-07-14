@@ -12,12 +12,12 @@ let props = defineProps({
 });
 
 const form = useForm({
-    role_id: '',
+    role_id: props.filters.role.id,
 });
 
 const onchangeHandler = () => {
     router.get('/permissions', {role_id: form.role_id}, {
-        preserveState: true,
+        preserveState: false,
         replace: true,
     });
 };
