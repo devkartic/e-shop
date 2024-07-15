@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,12 +38,15 @@ class UserController extends Controller
                 ->through(fn($user) => [
                     'id' => $user->id,
                     'name' => $user->name,
-                    'email' => $user->email
+                    'email' => $user->email,
+                    'role_id' => $user->role_id,
+                    'status' => $user->status,
                 ]),
             'filters' => $request->only(['search']),
             'can' => [
                 'createUser' => Auth::user()->can('create', User::class)
-            ]
+            ],
+            'roles' => Role::all()
         ]);
     }
 
@@ -62,13 +66,16 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'role_id' => ['required'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'role_id' => $request->role_id,
             'password' => Hash::make($request->password),
+            'status' => $request->status ? 1 : 0
         ]);
 
         return redirect()->route('users.index')->with('message', 'User created successfully!');
@@ -98,12 +105,15 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class.',id',
+            'role_id' => ['required'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->role_id = $request->role_id;
         $user->password = Hash::make($request->password);
+        $user->status = $request->status ? 1 : 0;
         $user->save();
 
         return redirect()->route('users.index')->with('message', 'User updated successfully!');

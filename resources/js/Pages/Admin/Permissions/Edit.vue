@@ -61,7 +61,7 @@ const closeModal = () => {
                             <tr>
                                 <td class="px-3 py-2 border border-200">
                                     <div class="flex justify-center">
-                                        <div class="text-sm font-bold text-gray-600">Show</div>
+                                        <div class="text-sm font-bold text-gray-600">Index / Show</div>
                                     </div>
                                 </td>
                                 <td class="px-3 py-2 border border-200">
@@ -71,7 +71,7 @@ const closeModal = () => {
                                 </td>
                                 <td class="px-3 py-2 border border-200">
                                     <div class="flex justify-center">
-                                        <div class="text-sm font-bold text-gray-600">Update</div>
+                                        <div class="text-sm font-bold text-gray-600">Edit / Update</div>
                                     </div>
                                 </td>
                                 <td class="px-3 py-2 border border-200">

@@ -8,11 +8,13 @@ import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import CustomButtonSubmit from "@/Components/CustomButtonSubmit.vue";
 import CustomButtonEdit from "@/Components/CustomButtonEdit.vue";
+import Checkbox from "@/Components/Checkbox.vue";
 
 const isOpeningModal = ref(false);
 
 const props = defineProps({
-    user: Object
+    user: Object,
+    roles: Object
 })
 
 const current_elements = ref({...props.user}).value
@@ -20,8 +22,10 @@ const current_elements = ref({...props.user}).value
 const form = useForm({
     name: current_elements.name ?? '',
     email: current_elements.email ?? '',
+    role_id: current_elements.role_id ?? '',
     password: '',
     password_confirmation: '',
+    status: true,
 });
 
 const openModal = () => {
@@ -87,6 +91,15 @@ const closeModal = () => {
 
                             <InputError class="mt-2" :message="form.errors.email" />
                         </div>
+                        <!-- Roles -->
+                        <div class="mb-4">
+                            <InputLabel for="role_id" value="Role" class="block text-sm font-semi-bold mb-2 text-gray-600" />
+                            <select v-model="form.role_id" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0">
+                                <option value="">Select One</option>
+                                <option v-for="role in props.roles" :value="role.id">{{ role.name }}</option>
+                            </select>
+                            <InputError class="mt-2" :message="form.errors.role_id" />
+                        </div>
                         <!-- password -->
                         <div class="mb-4">
                             <InputLabel for="password" value="Password" class="block text-sm font-semi-bold mb-2 text-gray-600"/>
@@ -116,6 +129,13 @@ const closeModal = () => {
                             />
 
                             <InputError class="mt-2" :message="form.errors.password_confirmation" />
+                        </div>
+                        <!-- checkbox -->
+                        <div class="flex justify-between">
+                            <div class="flex">
+                                <Checkbox name="status" v-model:checked="form.status" class="shrink-0 mt-0.5 border-gray-200 rounded-[4px] text-blue-600 focus:ring-blue-500" />
+                                <label for="hs-default-checkbox" class="text-sm text-gray-600 ms-3">Is Active?</label>
+                            </div>
                         </div>
 
                         <!-- button -->

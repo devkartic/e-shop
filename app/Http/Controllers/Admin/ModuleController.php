@@ -80,7 +80,7 @@ class ModuleController extends Controller
 
         Module::create([
             'name' => $request->name,
-            'status' => $request->is_active ? 1 : 0,
+            'status' => $request->status ? 1 : 0,
             'order_number' => $request->order_number,
         ]);
 
@@ -124,7 +124,7 @@ class ModuleController extends Controller
         ]);
 
         $module->name = $request->name;
-        $module->status = $request->is_active ? 1 : 0;
+        $module->status = $request->status ? 1 : 0;
         $module->order_number = $request->order_number;
         $module->save();
 

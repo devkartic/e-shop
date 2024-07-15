@@ -24,8 +24,8 @@ const form = useForm({
     module_id: current_element.module_id ?? '',
     url: current_element.url ?? '',
     fa_icon: current_element.fa_icon ?? '',
-    is_active: Boolean(current_element.status),
-    order_number: current_element.order_number ?? ''
+    order_number: current_element.order_number ?? '',
+    status: Boolean(current_element.status)
 });
 const openModal = () => {
     isOpeningModal.value = true;
@@ -125,7 +125,7 @@ const closeModal = () => {
                         <!-- checkbox -->
                         <div class="flex justify-between">
                             <div class="flex">
-                                <Checkbox name="remember" v-model:checked="form.is_active" class="shrink-0 mt-0.5 border-gray-200 rounded-[4px] text-blue-600 focus:ring-blue-500" />
+                                <Checkbox name="status" v-model:checked="form.status" class="shrink-0 mt-0.5 border-gray-200 rounded-[4px] text-blue-600 focus:ring-blue-500" />
                                 <label for="hs-default-checkbox" class="text-sm text-gray-600 ms-3">Is Active?</label>
                             </div>
                         </div>

@@ -65,7 +65,7 @@ class RoleController extends Controller
 
         Role::create([
             'name' => $request->name,
-            'status' => $request->is_active ? 1 : 0,
+            'status' => $request->status ? 1 : 0,
             'order_number' => $request->order_number,
         ]);
 
@@ -99,7 +99,7 @@ class RoleController extends Controller
         ]);
 
         $role->name = $request->name;
-        $role->status = $request->is_active ? 1 : 0;
+        $role->status = $request->status ? 1 : 0;
         $role->order_number = $request->order_number;
         $role->save();
 

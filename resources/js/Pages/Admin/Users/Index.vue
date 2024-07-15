@@ -14,7 +14,8 @@ import Delete from "@/Pages/Admin/Users/Delete.vue";
 let props = defineProps({
     users: Object,
     filters: Object,
-    can: Object
+    can: Object,
+    roles: Object
 });
 
 let search = ref(props.filters.search);
@@ -40,7 +41,7 @@ const handleClear = () => search.value = '';
                 <input v-model="search" type="text" placeholder="Search..." class="border-gray-200 px-2 rounded-s-lg focus:border-0"/>
                 <CustomButton class="bg-gray-200 rounded-e-lg text-gray-700" @click="handleClear">Clear</CustomButton>
             </div>
-            <Create/>
+            <Create :roles="props.roles"/>
         </div>
         <div class="flex flex-col mt-3">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -86,7 +87,7 @@ const handleClear = () => search.value = '';
                                     <Link :href="`/users/${user.id}/edit`">
                                         <CustomButtonInfo>Show</CustomButtonInfo>
                                     </Link>
-                                    <Edit :user="user" />
+                                    <Edit :user="user" :roles="props.roles"/>
                                     <Delete :user="user"/>
                                 </td>
                             </tr>

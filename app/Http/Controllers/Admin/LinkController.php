@@ -91,7 +91,7 @@ class LinkController extends Controller
             'name' => $request->name,
             'url' => $request->url,
             'fa_icon' => $request->fa_icon,
-            'status' => $request->is_active ? 1 : 0,
+            'status' => $request->status ? 1 : 0,
             'order_number' => $request->order_number,
         ]);
 
@@ -142,7 +142,7 @@ class LinkController extends Controller
         $link->url = $request->input('url');
         $link->fa_icon = $request->input('fa_icon');
         $link->order_number = $request->input('order_number');
-        $link->status = filter_var($request->input('is_active'), FILTER_VALIDATE_BOOLEAN);
+        $link->status = filter_var($request->input('status'), FILTER_VALIDATE_BOOLEAN);
         $link->save();
 
         return redirect()->route('links.index')->with('message', 'Updated successfully!');
