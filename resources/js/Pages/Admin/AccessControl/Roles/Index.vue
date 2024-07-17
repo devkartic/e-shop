@@ -5,17 +5,15 @@ import {debounce} from "lodash";
 import {ref, vShow, watch} from "vue";
 import Pagination from "@/Pages/Admin/Partials/Pagination.vue";
 import CustomButtonInfo from "@/Components/CustomButtonInfo.vue";
-import CustomButtonDelete from "@/Components/CustomButtonDelete.vue";
 import CustomButton from "@/Components/CustomButton.vue";
-import Create from "@/Pages/Admin/Users/Create.vue";
-import Edit from "@/Pages/Admin/Users/Edit.vue";
-import Delete from "@/Pages/Admin/Users/Delete.vue";
+import Create from "@/Pages/Admin/AccessControl/Roles/Create.vue";
+import Edit from "@/Pages/Admin/AccessControl/Roles/Edit.vue";
+import Delete from "@/Pages/Admin/AccessControl/Roles/Delete.vue";
 
 let props = defineProps({
-    users: Object,
+    roles: Object,
     filters: Object,
-    can: Object,
-    roles: Object
+    can: Object
 });
 
 let search = ref(props.filters.search);
@@ -23,7 +21,7 @@ let search = ref(props.filters.search);
 watch(search, debounce(value => {
     // console.log('Changed ' + value);
     // console.log('triggered');
-    router.get('/users', {search: value}, {
+    router.get('/roles', {search: value}, {
         preserveState: true,
         replace: true
     });
@@ -38,10 +36,11 @@ const handleClear = () => search.value = '';
     <AuthenticatedLayout>
         <div class="flex justify-between mb-6">
             <div class="flex justify-around gap-0.5">
-                <input v-model="search" type="text" placeholder="Search..." class="border-gray-200 px-2 rounded-s-lg focus:border-0"/>
+                <input v-model="search" type="text" placeholder="Search..."
+                       class="border-gray-200 px-2 rounded-s-lg focus:border-0"/>
                 <CustomButton class="bg-gray-200 rounded-e-lg text-gray-700" @click="handleClear">Clear</CustomButton>
             </div>
-            <Create :roles="props.roles"/>
+            <Create/>
         </div>
         <div class="flex flex-col mt-3">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -57,7 +56,12 @@ const handleClear = () => search.value = '';
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div class="text-sm font-bold text-gray-600">Email</div>
+                                        <div class="text-sm font-bold text-gray-600">Status</div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="text-sm font-bold text-gray-600">Order Number</div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -68,27 +72,38 @@ const handleClear = () => search.value = '';
                             </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                            <tr v-for="user in props.users.data" :key="user.id">
+                            <tr v-for="role in props.roles.data" :key="role.id">
                                 <td class="px-3 py-2 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div>
-                                            <div class="text-sm font-medium text-gray-900" v-text="user.name"></div>
+                                            <div class="text-sm font-medium text-gray-900" v-text="role.name"></div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-3 py-2 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div>
-                                            <div class="text-sm font-medium text-gray-900" v-text="user.email"></div>
+                                            <div class="text-sm font-medium text-gray-900">
+                                                <span v-if="Boolean(role.status)" class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Active</span>
+                                                <span v-if="!Boolean(role.status)" class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Active</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-3 py-2 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900"
+                                                 v-text="role.order_number"></div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-3 py-2 whitespace-nowrap text-sm font-medium flex justify-end gap-1">
-                                    <Link :href="`/users/${user.id}/edit`">
+                                    <Link :href="`/users/${role.id}/edit`">
                                         <CustomButtonInfo>Show</CustomButtonInfo>
                                     </Link>
-                                    <Edit :user="user" :roles="props.roles"/>
-                                    <Delete :user="user"/>
+                                    <Edit :role="role"/>
+                                    <Delete :role="role"/>
                                 </td>
                             </tr>
                             </tbody>
@@ -98,7 +113,7 @@ const handleClear = () => search.value = '';
             </div>
         </div>
         <!--    Pagination-->
-        <Pagination :links="props.users.links" class="mt-6"/>
+        <Pagination :links="props.roles.links" class="mt-6"/>
     </AuthenticatedLayout>
 
 </template>

@@ -1,9 +1,8 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, router, useForm} from '@inertiajs/vue3';
-import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import Edit from "@/Pages/Admin/Permissions/Edit.vue";
+import Edit from "@/Pages/Admin/AccessControl/Permissions/Edit.vue";
 import PermissionLockOpen from "@/Components/PermissionLockOpen.vue";
 
 let props = defineProps({

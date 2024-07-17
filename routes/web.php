@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\Admin\LinkController;
-use App\Http\Controllers\Admin\ModuleController;
-use App\Http\Controllers\Admin\PermissionController;
-use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\AccessControl\LinkController;
+use App\Http\Controllers\Admin\AccessControl\ModuleController;
+use App\Http\Controllers\Admin\AccessControl\PermissionController;
+use App\Http\Controllers\Admin\AccessControl\RoleController;
+use App\Http\Controllers\Admin\AccessControl\UserController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;

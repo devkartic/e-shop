@@ -1,21 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\AccessControl;
 
 use App\CacheRepositories\Modules;
 use App\Http\Controllers\Controller;
-use App\Models\Admin\Link;
-use App\Models\Admin\Permission;
-use App\Models\Admin\Role;
-use App\Models\Admin\Route;
-use App\Models\User;
+use App\Models\Admin\AccessControl\Link;
+use App\Models\Admin\AccessControl\Permission;
+use App\Models\Admin\AccessControl\Role;
+use App\Models\Admin\AccessControl\Route;
+use App\Models\Admin\AccessControl\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use JetBrains\PhpStorm\NoReturn;
 
 class PermissionController extends Controller
 {
@@ -41,7 +40,7 @@ class PermissionController extends Controller
     public function index(Request $request): \Inertia\Response
     {
         $role_id = $request->input('role_id')?: Auth::user()->role_id;
-        return Inertia::render('Admin/Permissions/Index', [
+        return Inertia::render('Admin/AccessControl/Permissions/Index', [
             'roles' => Role::all(),
             'filters' => [
                 'role' => $role_id ? Role::find($role_id) : [],

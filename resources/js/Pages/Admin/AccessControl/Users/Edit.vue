@@ -25,7 +25,7 @@ const form = useForm({
     role_id: current_elements.role_id ?? '',
     password: '',
     password_confirmation: '',
-    status: true,
+    status: Boolean(current_elements.status),
 });
 
 const openModal = () => {
@@ -34,6 +34,7 @@ const openModal = () => {
 
 const formSubmit = () => {
     form.patch(route('users.update', current_elements.id), {
+        preserveState: false,
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onFinish: () => form.reset()

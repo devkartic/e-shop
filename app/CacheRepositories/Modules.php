@@ -2,7 +2,7 @@
 
 namespace App\CacheRepositories;
 
-use App\Models\Admin\Module;
+use App\Models\Admin\AccessControl\Module;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\AccessControl;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin\Role;
-use App\Models\User;
+use App\Models\Admin\AccessControl\Role;
+use App\Models\Admin\AccessControl\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -24,7 +24,7 @@ class RoleController extends Controller
      */
     public function index(Request $request): \Inertia\Response
     {
-        return Inertia::render('Admin/Roles/Index', [
+        return Inertia::render('Admin/AccessControl/Roles/Index', [
             'roles' => Role::query()
                 ->when($request->input('search'), function ($query, $search) {
                     $query->where('name', 'like', "%$search%");

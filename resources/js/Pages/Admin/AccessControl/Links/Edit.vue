@@ -33,6 +33,7 @@ const openModal = () => {
 
 const formSubmit = () => {
     form.patch(route('links.update', current_element.id), {
+        preserveState: false,
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onFinish: () => form.reset()

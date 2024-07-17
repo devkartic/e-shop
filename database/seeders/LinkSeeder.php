@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Admin\Link;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Admin\AccessControl\Link;
 use Illuminate\Database\Seeder;
 
 class LinkSeeder extends Seeder

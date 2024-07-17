@@ -13,22 +13,23 @@ import Checkbox from "@/Components/Checkbox.vue";
 const isOpeningModal = ref(false);
 
 const props = defineProps({
-    role: Object
+    module: Object
 })
 
-const current_elements = ref({...props.role}).value
+const current_elements = ref({...props.module}).value
 
 const form = useForm({
     name: current_elements.name ?? '',
-    status: Boolean(current_elements.status),
-    order_number: current_elements.order_number ?? ''
+    order_number: current_elements.order_number ?? '',
+    status: Boolean(current_elements.status)
 });
 const openModal = () => {
     isOpeningModal.value = true;
 };
 
 const formSubmit = () => {
-    form.patch(route('roles.update', current_elements.id), {
+    form.patch(route('modules.update', current_elements.id), {
+        preserveState: false,
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onFinish: () => form.reset()

@@ -6,9 +6,9 @@ import {ref, vShow, watch} from "vue";
 import Pagination from "@/Pages/Admin/Partials/Pagination.vue";
 import CustomButtonInfo from "@/Components/CustomButtonInfo.vue";
 import CustomButton from "@/Components/CustomButton.vue";
-import Create from "@/Pages/Admin/Modules/Create.vue";
-import Edit from "@/Pages/Admin/Modules/Edit.vue";
-import Delete from "@/Pages/Admin/Modules/Delete.vue";
+import Create from "@/Pages/Admin/AccessControl/Modules/Create.vue";
+import Edit from "@/Pages/Admin/AccessControl/Modules/Edit.vue";
+import Delete from "@/Pages/Admin/AccessControl/Modules/Delete.vue";
 
 let props = defineProps({
     modules: Object,

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\AccessControl;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin\Link;
-use App\Models\Admin\Module;
-use App\Models\User;
+use App\Models\Admin\AccessControl\Link;
+use App\Models\Admin\AccessControl\Module;
+use App\Models\Admin\AccessControl\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -34,7 +34,7 @@ class LinkController extends Controller
      */
     public function index(Request $request): \Inertia\Response
     {
-        return Inertia::render('Admin/Links/Index', [
+        return Inertia::render('Admin/AccessControl/Links/Index', [
             'modules' => Module::all(),
             'links' => Link::query()
                 ->when($request->input('search'), function ($query, $search) {

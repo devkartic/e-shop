@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\AccessControl;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin\Route;
+use App\Models\Admin\AccessControl\Route;
 use Illuminate\Http\Request;
 
 class RouteController extends Controller
@@ -42,7 +42,7 @@ class RouteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Admin\Route  $route
+     * @param  \App\Models\Admin\AccessControl\Route  $route
      * @return \Illuminate\Http\Response
      */
     public function show(Route $route)
@@ -53,7 +53,7 @@ class RouteController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Admin\Route  $route
+     * @param  \App\Models\Admin\AccessControl\Route  $route
      * @return \Illuminate\Http\Response
      */
     public function edit(Route $route)
@@ -65,7 +65,7 @@ class RouteController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Admin\Route  $route
+     * @param  \App\Models\Admin\AccessControl\Route  $route
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Route $route)
@@ -76,7 +76,7 @@ class RouteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Admin\Route  $route
+     * @param  \App\Models\Admin\AccessControl\Route  $route
      * @return \Illuminate\Http\Response
      */
     public function destroy(Route $route)

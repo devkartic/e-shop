@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\AccessControl;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin\Role;
-use App\Models\User;
+use App\Models\Admin\AccessControl\Role;
+use App\Models\Admin\AccessControl\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -27,7 +26,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        return Inertia::render('Admin/Users/Index', [
+        return Inertia::render('Admin/AccessControl/Users/Index', [
             'users' => User::query()
                 ->when($request->input('search'), function ($query, $search) {
                     $query->where('name', 'like', "%$search%")->orWhere('email', 'like', "%$search%");
