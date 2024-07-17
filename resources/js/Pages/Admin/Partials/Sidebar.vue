@@ -122,7 +122,15 @@ const isOpen = ref(true);
                                         class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
                                         :href="route('categories.index')" :active="$page.component === 'Admin/General/Categories/Index'"
                                     >
-                                        <i class="fa-brands fa-critical-role text-xl"></i> <span>Categories</span>
+                                        <i class="fa fa-tree text-xl"></i> <span>Categories</span>
+                                    </AdminSidebarLink>
+                                </li>
+                                <li class="sidebar-item mb-1">
+                                    <AdminSidebarLink
+                                        class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
+                                        :href="route('products.index')" :active="$page.component === 'Admin/General/Products/Index'"
+                                    >
+                                        <i class="fa-brands fa-product-hunt text-xl"></i> <span>Products</span>
                                     </AdminSidebarLink>
                                 </li>
                             </ul>
