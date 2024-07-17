@@ -7,10 +7,10 @@ import { ref } from 'vue';
 import CustomButtonDelete from "@/Components/CustomButtonDelete.vue";
 
 const props = defineProps({
-    role: Object
+    category: Object
 })
 
-const current_element = ref({...props.role}).value
+const current_element = ref({...props.category}).value
 
 const confirmingDeletion = ref(false);
 

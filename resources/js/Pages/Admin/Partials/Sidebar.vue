@@ -61,7 +61,7 @@ const isOpen = ref(true);
                                 <li class="sidebar-item mb-1">
                                     <AdminSidebarLink
                                         class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
-                                        :href="route('roles.index')" :active="$page.component === 'Admin/Roles/Index'"
+                                        :href="route('roles.index')" :active="$page.component === 'Admin/AccessControl/Roles/Index'"
                                     >
                                         <i class="fa-brands fa-critical-role text-xl"></i> <span>Roles</span>
                                     </AdminSidebarLink>
@@ -70,7 +70,7 @@ const isOpen = ref(true);
                                 <li class="sidebar-item mb-1">
                                     <AdminSidebarLink
                                         class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
-                                        :href="route('users.index')" :active="$page.component === 'Admin/Users/Index'"
+                                        :href="route('users.index')" :active="$page.component === 'Admin/AccessControl/Users/Index'"
                                     >
                                         <i class="fa-solid fa-users text-xl"></i> <span>Users</span>
                                     </AdminSidebarLink>
@@ -79,7 +79,7 @@ const isOpen = ref(true);
                                 <li class="sidebar-item mb-1">
                                     <AdminSidebarLink
                                         class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
-                                        :href="route('modules.index')" :active="$page.component === 'Admin/Modules/Index'"
+                                        :href="route('modules.index')" :active="$page.component === 'Admin/AccessControl/Modules/Index'"
                                     >
                                         <i class="fa fa-info-circle text-xl"></i> <span>Modules</span>
                                     </AdminSidebarLink>
@@ -88,7 +88,7 @@ const isOpen = ref(true);
                                 <li class="sidebar-item mb-1">
                                     <AdminSidebarLink
                                         class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
-                                        :href="route('links.index')" :active="$page.component === 'Admin/Links/Index'"
+                                        :href="route('links.index')" :active="$page.component === 'Admin/AccessControl/Links/Index'"
                                     >
                                         <i class="fa-solid fa-link text-xl"></i> <span>Links</span>
                                     </AdminSidebarLink>
@@ -98,12 +98,33 @@ const isOpen = ref(true);
                                     <AdminSidebarLink
                                         class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
                                         :href="route('permissions.index')"
-                                        :active="$page.component === 'Admin/Permission/Index'"
+                                        :active="$page.component === 'Admin/AccessControl/Permissions/Index'"
                                     >
                                         <i class="fa-solid fa-key text-xl"></i> <span>Permissions</span>
                                     </AdminSidebarLink>
                                 </li>
 
+                            </ul>
+                        </li>
+                        <li>
+                            <div type="button" class="bg-white hover:bg-gray-100 font-semibold py-2 px-2 mb-1 rounded flex justify-between align-middle">
+                                <div>
+                                    <i class="ti ti-dots nav-small-cap-icon text-lg hidden text-center"></i>
+                                    <span class="uppercase">General</span>
+                                </div>
+                                <div>
+                                    <i class="fa-solid fa-angle-up"></i>
+                                </div>
+                            </div>
+                            <ul v-if="isOpen" class="text-gray-600 text-sm">
+                                <li class="sidebar-item mb-1">
+                                    <AdminSidebarLink
+                                        class="sidebar-link gap-3 py-2 px-3 rounded-md w-full flex items-center hover:text-blue-600 hover:bg-blue-100"
+                                        :href="route('categories.index')" :active="$page.component === 'Admin/General/Categories/Index'"
+                                    >
+                                        <i class="fa-brands fa-critical-role text-xl"></i> <span>Categories</span>
+                                    </AdminSidebarLink>
+                                </li>
                             </ul>
                         </li>
                     </ul>

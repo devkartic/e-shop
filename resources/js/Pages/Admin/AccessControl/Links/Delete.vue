@@ -7,10 +7,10 @@ import { ref } from 'vue';
 import CustomButtonDelete from "@/Components/CustomButtonDelete.vue";
 
 const props = defineProps({
-    role: Object
+    link: Object
 })
 
-const current_element = ref({...props.role}).value
+const current_element = ref({...props.link}).value
 
 const confirmingDeletion = ref(false);
 
@@ -43,12 +43,12 @@ const closeModal = () => {
         <Modal :show="confirmingDeletion" @close="closeModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900">
-                    Are you sure you want to delete <b>{{current_element.name}}</b> link?
+                    Are you sure you want to delete <b class="text-orange-500">{{current_element.name}}</b> ?
                 </h2>
 
                 <p class="mt-1 text-sm text-gray-600">
-                    Once the link is deleted, all of its resources and data will be permanently deleted. Please
-                    confirm you would like to permanently delete the link.
+                    Once data is deleted, all of its resources and data will be permanently deleted. Please
+                    confirm you would like to permanently delete the data.
                 </p>
 
                 <div class="mt-6 flex justify-end">
