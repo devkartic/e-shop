@@ -14,6 +14,16 @@ class LinkSeeder extends Seeder
             'module_id' => 1
         ],
         [
+            'name' => 'Modules',
+            'url' => 'modules',
+            'module_id' => 2
+        ],
+        [
+            'name' => 'Links',
+            'url' => 'links',
+            'module_id' => 2
+        ],
+        [
             'name' => 'Roles',
             'url' => 'roles',
             'module_id' => 2
@@ -27,6 +37,11 @@ class LinkSeeder extends Seeder
             'name' => 'Permissions',
             'url' => 'permissions',
             'module_id' => 2
+        ],
+        [
+            'name' => 'Categories',
+            'url' => 'categories',
+            'module_id' => 3
         ]
     ];
     /**

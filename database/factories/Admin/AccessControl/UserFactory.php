@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories\Admin;
+namespace Database\Factories\Admin\AccessControl;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;

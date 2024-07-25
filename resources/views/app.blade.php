@@ -17,7 +17,7 @@
 
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.5.2-web/css/all.css') }}"/>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite('resources/css/app.css')
 
     <title inertia>{{ config('app.name', 'e-Shop') }}</title>
     <!-- Scripts -->

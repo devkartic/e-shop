@@ -9,7 +9,8 @@ class ModuleSeeder extends Seeder
 {
     protected $modules = [
         ['name' => 'Home'],
-        ['name' => 'Auth'],
+        ['name' => 'AccessControl'],
+        ['name' => 'General'],
     ];
     /**
      * Run the database seeds.

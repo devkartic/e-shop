@@ -2,19 +2,64 @@
 
 namespace App\Http\Controllers\Admin\General;
 
+use App\Http\Controllers\Admin\AccessControl\PermissionController;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
+use App\Models\Admin\AccessControl\User;
+use App\Models\Admin\General\Category;
 use App\Models\Admin\General\Product;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
+    public string $destination_path;
+
+    /**
+     * Check permission for routs, roles, links.
+     *
+     * @return Response or exception
+     */
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            PermissionController::permission_verify();
+            return $next($request);
+        });
+        $this->destination_path = env('APP_ENV') === 'local' ? public_path(
+            'uploads/product/images/'
+        ) : 'uploads/product/images/';
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): \Inertia\Response
     {
-        //
+        return Inertia::render('Admin/General/Products/Index', [
+            'categories' => Category::all(),
+            'products' => Product::query()
+                ->when($request->input('search'), function ($query, $search) {
+                    $query->where('name', 'like', "%$search%")->orWhere('description', 'like', "%$search%");
+                })
+                ->orderBy('id', 'desc')
+                ->paginate(10)
+                ->withQueryString()
+                ->through(fn($collection) => [
+                    'category_id' => $collection->category_id,
+                    'id' => $collection->id,
+                    'name' => $collection->name,
+                    'description' => $collection->discription,
+                    'image_path' => $collection->image_path,
+                    'status' => $collection->status,
+                    'order_number' => $collection->order_number
+                ]),
+            'filters' => $request->only(['search']),
+            'can' => [
+                'createUser' => Auth::user()->can('create', User::class)
+            ]
+        ]);
     }
 
     /**
@@ -28,9 +73,43 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductRequest $request)
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'category_id' => ['required', 'integer'],
+            'name' => 'required|string|max:255|unique:' . Product::class,
+            'description' => ['required', 'string'],
+            'upload_product_image' => ['mimes:jpeg,jpg,png,gif,svg,webp|max:2048'],
+            'order_number' => ['integer', 'nullable', 'max:100']
+        ]);
+        /* Product image upload */
+        $product_image_path = null;
+//        if ($request->input('upload_product_image') != null && $request->input('upload_product_image')->isValid()) {
+//            try {
+//                $file = $request->input('upload_product_image');
+//                $tempName = strtolower(str_replace(' ', '', $request->input('upload_product_image')));
+//                $image_path = $tempName . date("Y-m-d") . "-" . time() . '.' . $file->getClientOriginalExtension();
+//                $file->move($this->destination_path, $image_path);
+//                $product_image_path = $product_image_path . $image_path;
+//            } catch (FileNotFoundException $e) {
+//                dd($e->getMessage());
+//            }
+//        }
+
+        if ($request->hasFile('upload_product_image')) {
+            $product_image_path = $request->file('upload_product_image')->store($this->destination_path, 'public');
+        }
+
+        Product::create([
+            'category_id' => $request->input('category_id'),
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'image_path' => $product_image_path,
+            'order_number' => $request->input('order_number'),
+            'status' => $request->input('status') ? 1 : 0,
+        ]);
+
+        return redirect()->route('products.index')->with('message', 'Created successfully!');
     }
 
     /**
