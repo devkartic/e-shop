@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\AccessControl\User;
 use App\Models\Admin\General\Category;
 use App\Models\Admin\General\Product;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -28,8 +27,8 @@ class ProductController extends Controller
             return $next($request);
         });
         $this->destination_path = env('APP_ENV') === 'local' ? public_path(
-            'uploads/product/images/'
-        ) : 'uploads/product/images/';
+            'uploads/product/images'
+        ) : 'uploads/product/images';
     }
 
     /**
@@ -50,7 +49,7 @@ class ProductController extends Controller
                     'category_id' => $collection->category_id,
                     'id' => $collection->id,
                     'name' => $collection->name,
-                    'description' => $collection->discription,
+                    'description' => $collection->description,
                     'image_path' => $collection->image_path,
                     'status' => $collection->status,
                     'order_number' => $collection->order_number
@@ -79,25 +78,24 @@ class ProductController extends Controller
             'category_id' => ['required', 'integer'],
             'name' => 'required|string|max:255|unique:' . Product::class,
             'description' => ['required', 'string'],
-            'upload_product_image' => ['mimes:jpeg,jpg,png,gif,svg,webp|max:2048'],
+            'upload_product_image' => [
+                'image',
+                'mimes:jpg,png',
+                'max:2048'
+            ],
             'order_number' => ['integer', 'nullable', 'max:100']
         ]);
+
         /* Product image upload */
         $product_image_path = null;
-//        if ($request->input('upload_product_image') != null && $request->input('upload_product_image')->isValid()) {
-//            try {
-//                $file = $request->input('upload_product_image');
-//                $tempName = strtolower(str_replace(' ', '', $request->input('upload_product_image')));
-//                $image_path = $tempName . date("Y-m-d") . "-" . time() . '.' . $file->getClientOriginalExtension();
-//                $file->move($this->destination_path, $image_path);
-//                $product_image_path = $product_image_path . $image_path;
-//            } catch (FileNotFoundException $e) {
-//                dd($e->getMessage());
-//            }
-//        }
-
-        if ($request->hasFile('upload_product_image')) {
-            $product_image_path = $request->file('upload_product_image')->store($this->destination_path, 'public');
+        if ($request->hasFile('upload_product_image') && $request->file('upload_product_image')->isValid()) {
+            try {
+                $file = $request->file('upload_product_image');
+                $renamedFile = date("Y-m-d") . "-" . time() . '.' . $file->getClientOriginalExtension();
+                $product_image_path = $file->move($this->destination_path, $renamedFile);
+            } catch (\Exception $e) {
+                dd($e->getMessage());
+            }
         }
 
         Product::create([
@@ -131,9 +129,42 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(Request $request, Product $product): \Illuminate\Http\RedirectResponse
     {
-        //
+        $request->validate([
+            'category_id' => ['required', 'integer'],
+            'name' => 'required|string|max:255|unique:' . Product::class . ',id',
+            'description' => ['required', 'string'],
+            'upload_product_image' => [
+                'nullable',
+                'image',
+                'mimes:jpg,png',
+                'max:2048'
+            ],
+            'order_number' => ['integer', 'nullable', 'max:100']
+        ]);
+
+        /* Product image upload */
+        $product_image_path = null;
+        if ($request->hasFile('upload_product_image') && $request->file('upload_product_image')->isValid()) {
+            try {
+                $file = $request->file('upload_product_image');
+                $renamedFile = date("Y-m-d") . "-" . time() . '.' . $file->getClientOriginalExtension();
+                $product_image_path = $file->move($this->destination_path, $renamedFile);
+            } catch (\Exception $e) {
+                dd($e->getMessage());
+            }
+        }
+
+        $product->category_id = $request->input('category_id');
+        $product->name = $request->input('name');
+        $product->description = $request->input('description');
+        if($request->hasFile('upload_product_image')) $product->image_path = $product_image_path;
+        $product->order_number = $request->input('order_number');
+        $product->status = filter_var($request->input('status'), FILTER_VALIDATE_BOOLEAN);
+        $product->save();
+
+        return redirect()->route('products.index')->with('message', 'Updated successfully!');
     }
 
     /**
@@ -141,6 +172,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return redirect()->route('products.index')->with('message', 'Deleted successfully!');
     }
 }

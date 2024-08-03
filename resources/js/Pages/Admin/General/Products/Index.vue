@@ -103,7 +103,7 @@ const handleClear = () => search.value = '';
                                     <Link :href="`/categories/${product.id}/edit`">
                                         <CustomButtonInfo>Show</CustomButtonInfo>
                                     </Link>
-                                    <Edit :product="product"/>
+                                    <Edit :categories="categories" :product="product"/>
                                     <Delete :product="product"/>
                                 </td>
                             </tr>

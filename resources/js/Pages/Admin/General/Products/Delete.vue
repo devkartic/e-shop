@@ -7,10 +7,10 @@ import { ref } from 'vue';
 import CustomButtonDelete from "@/Components/CustomButtonDelete.vue";
 
 const props = defineProps({
-    category: Object
+    product: Object
 })
 
-const current_element = ref({...props.category}).value
+const current_element = ref({...props.product}).value
 
 const confirmingDeletion = ref(false);
 
@@ -23,7 +23,7 @@ const confirmDeletion = () => {
 };
 
 const deleteHandler = () => {
-    form.delete(route('roles.destroy', current_element.id), {
+    form.delete(route('products.destroy', current_element.id), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onFinish: () => form.reset(),

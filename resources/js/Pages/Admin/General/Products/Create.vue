@@ -20,7 +20,7 @@ const form = useForm({
     name: '',
     category_id: '',
     description: '',
-    upload_product_image: '',
+    upload_product_image: null,
     order_number: '',
     status: false,
 });
@@ -60,7 +60,7 @@ const closeModal = () => {
                         <!-- Category -->
                         <div class="mb-4">
                             <InputLabel for="category_id" value="Category" class="block text-sm font-semi-bold mb-2 text-gray-600" />
-                            <select v-model="form.category_id" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0">
+                            <select v-model="form.category_id" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0" required>
                                 <option value="">Select One</option>
                                 <option v-for="category in props.categories" :value="category.id">{{ category.name }}</option>
                             </select>
@@ -104,11 +104,11 @@ const closeModal = () => {
                         <div class="mb-4">
                             <InputLabel for="upload_product_image" value="Image Upload" class="block text-sm font-semi-bold mb-2 text-gray-600" />
 
-                            <TextInput
+                            <input
                                 id="upload_product_image"
                                 type="file"
-                                class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0"
-                                v-model="form.upload_product_image"
+                                class="py-3 px-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline dark:border-gray-300 dark:placeholder-gray-400"
+                                @input="form.upload_product_image = $event.target.files[0]"
                             />
 
                             <InputError class="mt-2" :message="form.errors.upload_product_image" />
