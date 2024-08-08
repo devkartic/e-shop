@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\AccessControl\User;
 use App\Models\Admin\General\Category;
 use App\Models\Admin\General\Product;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -26,9 +27,6 @@ class ProductController extends Controller
             PermissionController::permission_verify();
             return $next($request);
         });
-        $this->destination_path = env('APP_ENV') === 'local' ? public_path(
-            'uploads/product/images'
-        ) : 'uploads/product/images';
     }
 
     /**
@@ -92,7 +90,8 @@ class ProductController extends Controller
             try {
                 $file = $request->file('upload_product_image');
                 $renamedFile = date("Y-m-d") . "-" . time() . '.' . $file->getClientOriginalExtension();
-                $product_image_path = $file->move($this->destination_path, $renamedFile);
+                $product_image_path = "uploads/images/products/$renamedFile";
+                $file->storeAs('public', $product_image_path);
             } catch (\Exception $e) {
                 dd($e->getMessage());
             }
@@ -172,6 +171,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        File::delete(storage_path('app/public/'.$product->image_path));
         $product->delete();
         return redirect()->route('products.index')->with('message', 'Deleted successfully!');
     }
