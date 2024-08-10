@@ -89,22 +89,23 @@ const username = usePage().props.auth.user.username;
                             aria-labelledby="hs-dropdown-custom-icon-trigger">
                             <div class="card-body p-0 py-2">
                                 <a href="javscript:void(0)"
-                                   class="flex gap-2 items-center px-4 py-[6px] hover:bg-blue-500">
-                                    <i class="ti ti-user text-gray-500 text-xl "></i>
-                                    <p class="text-sm text-gray-500">My Profile</p>
+                                   class="flex text-gray-500 gap-2 items-center px-4 py-[6px] hover:bg-blue-500 hover:text-white">
+                                    <i class="ti ti-user text-xl "></i>
+                                    <p class="text-sm">My Profile</p>
                                 </a>
                                 <a href="javscript:void(0)"
-                                   class="flex gap-2 items-center px-4 py-[6px] hover:bg-blue-500">
-                                    <i class="ti ti-mail text-gray-500 text-xl"></i>
-                                    <p class="text-sm text-gray-500">My Account</p>
+                                   class="flex text-gray-500 gap-2 items-center px-4 py-[6px] hover:bg-blue-500 hover:text-white">
+                                    <i class="ti ti-mail text-xl"></i>
+                                    <p class="text-sm">My Account</p>
                                 </a>
                                 <a href="javscript:void(0)"
-                                   class="flex gap-2 items-center px-4 py-[6px] hover:bg-blue-500">
-                                    <i class="ti ti-list-check text-gray-500 text-xl "></i>
-                                    <p class="text-sm text-gray-500">My Task</p>
+                                   class="flex text-gray-500 gap-2 items-center px-4 py-[6px] hover:bg-blue-500 hover:text-white">
+                                    <i class="ti ti-list-check text-xl "></i>
+                                    <p class="text-sm">My Task</p>
                                 </a>
-                                <div class="px-4 mt-[7px] grid">
-                                    <NavLink :href="route('logout')" method="post" class="btn-outline-primary w-full hover:bg-blue-600 hover:text-white" as="button">Logout</NavLink>
+                                <div class="flex text-gray-500 gap-2 items-center px-4 py-[6px] hover:bg-blue-500 hover:text-white">
+                                    <i class="ti ti-logout text-xl "></i>
+                                    <NavLink :href="route('logout')" method="post" class="w-full text-sm text-gray-500 hover:text-white hover:border-0" as="button">Logout</NavLink>
                                 </div>
 
                             </div>
