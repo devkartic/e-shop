@@ -4,8 +4,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import {router, useForm} from '@inertiajs/vue3';
+import {ref} from 'vue';
 import CustomButtonSubmit from "@/Components/CustomButtonSubmit.vue";
 import CustomButtonEdit from "@/Components/CustomButtonEdit.vue";
 import Checkbox from "@/Components/Checkbox.vue";
@@ -23,7 +23,7 @@ const form = useForm({
     name: current_elements.name ?? '',
     category_id: current_elements.category_id ?? '',
     description: current_elements.description ?? '',
-    upload_product_image: current_elements.image_path ?? null,
+    upload_product_image: null,
     status: Boolean(current_elements.status),
     order_number: current_elements.order_number ?? '',
 });
@@ -32,12 +32,16 @@ const openModal = () => {
 };
 
 const formSubmit = () => {
-    form.patch(route('products.update', current_elements.id), {
-        preserveState: false,
-        preserveScroll: true,
-        onSuccess: () => closeModal(),
-        onFinish: () => form.reset()
-    });
+    router.post(`products/${current_elements.id}`, {
+            ...form,
+            _method: 'put'
+        }, {
+            preserveState: false,
+            preserveScroll: true,
+            onSuccess: () => closeModal(),
+            onFinish: () => form.reset()
+        }
+    );
 };
 
 const closeModal = () => {
@@ -61,16 +65,23 @@ const closeModal = () => {
                     <form @submit.prevent="formSubmit">
                         <!-- Category -->
                         <div class="mb-4">
-                            <InputLabel for="category_id" value="Category" class="block text-sm font-semi-bold mb-2 text-gray-600" />
-                            <select v-model="form.category_id" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0" required>
+                            <InputLabel for="category_id" value="Category"
+                                        class="block text-sm font-semi-bold mb-2 text-gray-600"/>
+                            <select v-model="form.category_id"
+                                    class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0"
+                                    required>
                                 <option value="">Select One</option>
-                                <option v-for="category in props.categories" :value="category.id">{{ category.name }}</option>
+                                <option v-for="category in props.categories" :value="category.id">{{
+                                        category.name
+                                    }}
+                                </option>
                             </select>
-                            <InputError class="mt-2" :message="form.errors.category_id" />
+                            <InputError class="mt-2" :message="form.errors.category_id"/>
                         </div>
                         <!-- name -->
                         <div class="mb-4">
-                            <InputLabel for="name" value="Name" class="block text-sm font-semi-bold mb-2 text-gray-600" />
+                            <InputLabel for="name" value="Name"
+                                        class="block text-sm font-semi-bold mb-2 text-gray-600"/>
 
                             <TextInput
                                 id="name"
@@ -82,12 +93,13 @@ const closeModal = () => {
                                 autocomplete="name"
                             />
 
-                            <InputError class="mt-2" :message="form.errors.name" />
+                            <InputError class="mt-2" :message="form.errors.name"/>
 
                         </div>
                         <!-- description -->
                         <div class="mb-4">
-                            <InputLabel for="description" value="Description" class="block text-sm font-semi-bold mb-2 text-gray-600" />
+                            <InputLabel for="description" value="Description"
+                                        class="block text-sm font-semi-bold mb-2 text-gray-600"/>
 
                             <textarea
                                 id="description"
@@ -99,12 +111,13 @@ const closeModal = () => {
                                 autocomplete="description"
                             ></textarea>
 
-                            <InputError class="mt-2" :message="form.errors.description" />
+                            <InputError class="mt-2" :message="form.errors.description"/>
 
                         </div>
                         <!-- Image -->
                         <div class="mb-4">
-                            <InputLabel for="upload_product_image" value="Image Upload" class="block text-sm font-semi-bold mb-2 text-gray-600" />
+                            <InputLabel for="upload_product_image" value="Image Upload"
+                                        class="block text-sm font-semi-bold mb-2 text-gray-600"/>
 
                             <input
                                 id="upload_product_image"
@@ -113,12 +126,20 @@ const closeModal = () => {
                                 @input="form.upload_product_image = $event.target.files[0]"
                             />
 
-                            <InputError class="mt-2" :message="form.errors.upload_product_image" />
+                            <InputError class="mt-2" :message="form.errors.upload_product_image"/>
+
+                            <div v-if="current_elements.image_path" class="flex">
+                                <div class="w-52 mt-5 rounded border-2 border-gray-300">
+                                    <img class="h-auto max-w-full rounded-lg"
+                                         :src="`/storage/${current_elements.image_path}`" alt="image description">
+                                </div>
+                            </div>
 
                         </div>
                         <!-- Order Number -->
                         <div class="mb-4">
-                            <InputLabel for="order_number" value="Order Number" class="block text-sm font-semi-bold mb-2 text-gray-600" />
+                            <InputLabel for="order_number" value="Order Number"
+                                        class="block text-sm font-semi-bold mb-2 text-gray-600"/>
 
                             <TextInput
                                 id="order_number"
@@ -128,19 +149,20 @@ const closeModal = () => {
                                 autocomplete="order_number"
                             />
 
-                            <InputError class="mt-2" :message="form.errors.order_number" />
+                            <InputError class="mt-2" :message="form.errors.order_number"/>
                         </div>
                         <!-- checkbox -->
                         <div class="flex justify-between">
                             <div class="flex">
-                                <Checkbox name="status" v-model:checked="form.status" class="shrink-0 mt-0.5 border-gray-200 rounded-[4px] text-blue-600 focus:ring-blue-500" />
+                                <Checkbox name="status" v-model:checked="form.status"
+                                          class="shrink-0 mt-0.5 border-gray-200 rounded-[4px] text-blue-600 focus:ring-blue-500"/>
                                 <label for="hs-default-checkbox" class="text-sm text-gray-600 ms-3">Is Active?</label>
                             </div>
                         </div>
 
                         <!-- button -->
                         <div class="mt-6 flex justify-end">
-                            <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+                            <SecondaryButton @click="closeModal"> Cancel</SecondaryButton>
 
                             <CustomButtonSubmit
                                 class="ms-3"

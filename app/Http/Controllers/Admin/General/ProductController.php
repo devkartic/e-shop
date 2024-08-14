@@ -77,6 +77,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255|unique:' . Product::class,
             'description' => ['required', 'string'],
             'upload_product_image' => [
+                'nullable',
                 'image',
                 'mimes:jpg,png',
                 'max:2048'
@@ -128,8 +129,9 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product): \Illuminate\Http\RedirectResponse
+    public function update(Request $request, Product $product)
     {
+
         $request->validate([
             'category_id' => ['required', 'integer'],
             'name' => 'required|string|max:255|unique:' . Product::class . ',id',
@@ -149,7 +151,8 @@ class ProductController extends Controller
             try {
                 $file = $request->file('upload_product_image');
                 $renamedFile = date("Y-m-d") . "-" . time() . '.' . $file->getClientOriginalExtension();
-                $product_image_path = $file->move($this->destination_path, $renamedFile);
+                $product_image_path = "uploads/images/products/$renamedFile";
+                $file->storeAs('public', $product_image_path);
             } catch (\Exception $e) {
                 dd($e->getMessage());
             }

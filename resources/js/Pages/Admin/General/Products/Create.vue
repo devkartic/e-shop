@@ -31,7 +31,7 @@ const openModal = () => {
 
 const formSubmit = () => {
     form.post(route('products.store'), {
-        forceFormData: true,
+        preserveState: false,
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onFinish: () => form.reset()
