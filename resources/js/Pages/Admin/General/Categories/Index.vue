@@ -7,13 +7,10 @@ import Create from "@/Pages/Admin/General/Categories/Create.vue";
 
 const props = defineProps(
     {
-        categories: {
-            type: Array,
-        },
+        parentItems: Object,
+        categories: Array
     }
 );
-
-console.log(props.categories);
 
 </script>
 
@@ -28,7 +25,7 @@ console.log(props.categories);
                     List
                 </div>
             </div>
-            <Create/>
+            <Create :parentItems="props.parentItems"/>
         </div>
         <div class="flex flex-col mt-3">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -37,7 +34,7 @@ console.log(props.categories);
                         <div class="grid grid-cols-12 gap-2">
                             <div class="col-span-12">
                                 <ul class="lg:p-5">
-                                    <TreeNode :items="categories"/>
+                                    <TreeNode :items="categories" :parentItems="parentItems"/>
                                 </ul>
                             </div>
                         </div>

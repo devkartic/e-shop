@@ -13,6 +13,7 @@ import Checkbox from "@/Components/Checkbox.vue";
 const isOpeningModal = ref(false);
 
 const props = defineProps({
+    parentItems: Object,
     item: Object
 })
 
@@ -20,6 +21,7 @@ const current_elements = ref({...props.item}).value
 
 const form = useForm({
     name: current_elements.name ?? '',
+    parent_id: current_elements.parent_id ?? null,
     status: Boolean(current_elements.status),
     order_number: current_elements.order_number ?? ''
 });
@@ -55,7 +57,16 @@ const closeModal = () => {
 
                 <div class="mt-6">
                     <form @submit.prevent="formSubmit">
-                        <!-- username -->
+                        <!-- Parent Category -->
+                        <div class="mb-4">
+                            <InputLabel for="module_id" value="Parent" class="block text-sm font-semi-bold mb-2 text-gray-600" />
+                            <select v-model="form.parent_id" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0">
+                                <option value="">Select One</option>
+                                <option v-for="item in parentItems" :value="item.id">{{ item.name }}</option>
+                            </select>
+                            <InputError class="mt-2" :message="form.errors.parent_id" />
+                        </div>
+                        <!-- name -->
                         <div class="mb-4">
                             <InputLabel for="name" value="Name" class="block text-sm font-semi-bold mb-2 text-gray-600" />
 

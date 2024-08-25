@@ -5,6 +5,7 @@ import Edit from "@/Pages/Admin/General/Categories/Edit.vue";
 import Delete from "@/Pages/Admin/General/Categories/Delete.vue";
 
 const props = defineProps({
+    parentItems: Object,
     items: {
         type: Array,
         required: true,
@@ -14,7 +15,6 @@ const props = defineProps({
 const openItems = ref([]);
 
 const toggle = (id) => {
-    console.log(id);
     if (openItems.value.includes(id)) {
         openItems.value = openItems.value.filter((itemId) => itemId !== id);
     } else {
@@ -41,14 +41,14 @@ const isOpen = (id) => openItems.value.includes(id);
                     <div class="flex items-center">{{ item.name }}</div>
                 </div>
                 <div class="flex gap-1">
-                    <Create/>
-                    <Edit :item="item"/>
+                    <Create :parentItems="parentItems" :createItem="item.id"/>
+                    <Edit :item="item" :parentItems="parentItems"/>
                     <Delete :item="item"/>
                 </div>
             </div>
             <TreeNode
                 v-if="isOpen(item.id) && item.children && item.children.length"
-                :items="item.children"
+                :items="item.children" :parentItems="parentItems"
                 class="pl-5"
             />
         </li>

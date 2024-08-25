@@ -24,7 +24,9 @@ class CategoryController extends Controller
     public function index(): \Inertia\Response
     {
         $categories = Category::with('children')->whereNull('parent_id')->get();
+        $parentItems = Category::all();
         return Inertia::render('Admin/General/Categories/Index', [
+            'parentItems' => $parentItems,
             'categories' => $categories,
         ]);
     }
@@ -46,7 +48,6 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255|unique:' . Category::class,
             'order_number' => 'integer|nullable',
         ]);
-
         Category::create([
             'name' => $request->name,
             'parent_id' => $request->parent_id,
