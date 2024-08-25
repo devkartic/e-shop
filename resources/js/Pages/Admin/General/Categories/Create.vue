@@ -14,6 +14,7 @@ const isOpeningModal = ref(false);
 
 const form = useForm({
     name: '',
+    parent_id: '',
     order_number: '',
     status: false,
 });

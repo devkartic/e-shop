@@ -19,4 +19,14 @@ class Category extends Model
         'status',
         'order_number'
     ];
+
+    public function children(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Category::class, 'parent_id')->with('children');
+    }
+
+    public function parent(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
 }

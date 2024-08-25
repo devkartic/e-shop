@@ -13,10 +13,10 @@ import Checkbox from "@/Components/Checkbox.vue";
 const isOpeningModal = ref(false);
 
 const props = defineProps({
-    category: Object
+    item: Object
 })
 
-const current_elements = ref({...props.category}).value
+const current_elements = ref({...props.item}).value
 
 const form = useForm({
     name: current_elements.name ?? '',

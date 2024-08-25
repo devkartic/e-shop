@@ -50,7 +50,7 @@ const closeModal = () => {
         <Modal :show="isOpeningModal" @close="closeModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900">
-                    Role Edit
+                    Module Edit
                 </h2>
 
                 <div class="mt-6">

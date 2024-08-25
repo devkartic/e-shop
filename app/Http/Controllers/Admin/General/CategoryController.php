@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Admin\General;
 
 use App\Http\Controllers\Admin\AccessControl\PermissionController;
 use App\Http\Controllers\Controller;
-use App\Models\Admin\AccessControl\User;
 use App\Models\Admin\General\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class CategoryController extends Controller
@@ -23,26 +21,11 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): \Inertia\Response
+    public function index(): \Inertia\Response
     {
+        $categories = Category::with('children')->whereNull('parent_id')->get();
         return Inertia::render('Admin/General/Categories/Index', [
-            'categories' => Category::query()
-                ->when($request->input('search'), function ($query, $search) {
-                    $query->where('name', 'like', "%$search%");
-                })
-                ->orderBy('id', 'desc')
-                ->paginate(10)
-                ->withQueryString()
-                ->through(fn($role) => [
-                    'id' => $role->id,
-                    'name' => $role->name,
-                    'status' => $role->status,
-                    'order_number' => $role->order_number
-                ]),
-            'filters' => $request->only(['search']),
-            'can' => [
-                'createUser' => Auth::user()->can('create', User::class)
-            ]
+            'categories' => $categories,
         ]);
     }
 
@@ -66,6 +49,7 @@ class CategoryController extends Controller
 
         Category::create([
             'name' => $request->name,
+            'parent_id' => $request->parent_id,
             'status' => $request->status ? 1 : 0,
             'order_number' => $request->order_number,
         ]);
@@ -100,6 +84,7 @@ class CategoryController extends Controller
         ]);
 
         $category->name = $request->name;
+        $category->parent_id = $request->parent_id;
         $category->status = $request->status ? 1 : 0;
         $category->order_number = $request->order_number;
         $category->save();
@@ -110,7 +95,7 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(Category $category): \Illuminate\Http\RedirectResponse
     {
         $category->delete();
         return redirect()->route('categories.index')->with('message', 'Deleted successfully!');

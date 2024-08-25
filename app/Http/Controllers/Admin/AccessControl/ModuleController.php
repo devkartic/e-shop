@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin\AccessControl;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\AccessControl\Module;
 use App\Models\Admin\AccessControl\User;
-use App\Models\Admin\Menu;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

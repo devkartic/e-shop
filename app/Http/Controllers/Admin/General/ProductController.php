@@ -153,6 +153,7 @@ class ProductController extends Controller
                 $renamedFile = date("Y-m-d") . "-" . time() . '.' . $file->getClientOriginalExtension();
                 $product_image_path = "uploads/images/products/$renamedFile";
                 $file->storeAs('public', $product_image_path);
+                File::delete(storage_path('app/public/'.$product->image_path));
             } catch (\Exception $e) {
                 dd($e->getMessage());
             }
