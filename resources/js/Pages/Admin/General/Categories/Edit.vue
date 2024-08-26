@@ -21,7 +21,7 @@ const current_elements = ref({...props.item}).value
 
 const form = useForm({
     name: current_elements.name ?? '',
-    parent_id: current_elements.parent_id ?? null,
+    parent_id: current_elements.parent_id ?? '',
     status: Boolean(current_elements.status),
     order_number: current_elements.order_number ?? ''
 });

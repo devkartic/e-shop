@@ -21,7 +21,7 @@ const parent_id = ref(props.createItem).value;
 
 const form = useForm({
     name: '',
-    parent_id: parent_id ?? null,
+    parent_id: parent_id ?? '',
     order_number: '',
     status: false,
 });

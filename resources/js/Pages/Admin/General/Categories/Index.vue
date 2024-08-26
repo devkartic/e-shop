@@ -21,8 +21,7 @@ const props = defineProps(
         <div class="flex justify-between mb-3">
             <div class="flex justify-around gap-0.5">
                 <div class="mb-4 text-xl font-bold text-gray-900 dark:text-white md:text-2xl lg:text-3xl">
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">Category</span>
-                    List
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">Category List</span>
                 </div>
             </div>
             <Create :parentItems="props.parentItems"/>
