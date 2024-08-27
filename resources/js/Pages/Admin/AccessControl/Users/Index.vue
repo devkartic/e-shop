@@ -60,6 +60,11 @@ const handleClear = () => search.value = '';
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="text-sm font-bold text-gray-600">Role</div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center justify-end">
                                         <div class="text-sm font-bold text-right text-gray-600">Action</div>
                                     </div>
@@ -79,6 +84,13 @@ const handleClear = () => search.value = '';
                                     <div class="flex items-center">
                                         <div>
                                             <div class="text-sm font-medium text-gray-900" v-text="user.email"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-3 py-2 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900" v-text="user.role"></div>
                                         </div>
                                     </div>
                                 </td>

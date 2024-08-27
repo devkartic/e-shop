@@ -21,6 +21,15 @@ class Category extends Model
         'order_number'
     ];
 
+    public static function onlyParent()
+    {
+        return Category::whereHas('children')->get();
+    }
+    public static function onlyChild()
+    {
+        return Category::whereDoesntHave('children')->get();
+    }
+
     public function children(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Category::class, 'parent_id')->with('children');

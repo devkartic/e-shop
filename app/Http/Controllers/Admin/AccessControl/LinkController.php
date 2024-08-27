@@ -36,7 +36,7 @@ class LinkController extends Controller
     {
         return Inertia::render('Admin/AccessControl/Links/Index', [
             'modules' => Module::all(),
-            'links' => Link::query()
+            'links' => Link::with('module')
                 ->when($request->input('search'), function ($query, $search) {
                     $query->where('name', 'like', "%$search%")->orWhere('url', 'like', "%$search%");
                 })
@@ -46,8 +46,8 @@ class LinkController extends Controller
                 ->through(fn($link) => [
                     'module_id' => $link->module_id,
                     'id' => $link->id,
-                    'module' => $link->molude,
                     'name' => $link->name,
+                    'module' => $link->module->name,
                     'url' => $link->url,
                     'fa_icon' => $link->fa_icon,
                     'status' => $link->status,

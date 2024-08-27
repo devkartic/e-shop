@@ -27,7 +27,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('Admin/AccessControl/Users/Index', [
-            'users' => User::query()
+            'users' => User::query()->with('role')
                 ->when($request->input('search'), function ($query, $search) {
                     $query->where('name', 'like', "%$search%")->orWhere('email', 'like', "%$search%");
                 })
@@ -39,6 +39,7 @@ class UserController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                     'role_id' => $user->role_id,
+                    'role' => $user->role->name,
                     'status' => $user->status,
                 ]),
             'filters' => $request->only(['search']),

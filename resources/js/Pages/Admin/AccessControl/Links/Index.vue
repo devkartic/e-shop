@@ -92,7 +92,7 @@ const handleClear = () => search.value = '';
                                 <td class="px-3 py-2 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div>
-                                            <div class="text-sm font-medium text-gray-900" v-text="link.module_name"></div>
+                                            <div class="text-sm font-medium text-gray-900">{{link.module}}</div>
                                         </div>
                                     </div>
                                 </td>
