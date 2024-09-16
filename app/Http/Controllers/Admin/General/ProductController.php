@@ -14,21 +14,6 @@ use Inertia\Inertia;
 
 class ProductController extends Controller
 {
-    public string $destination_path;
-
-    /**
-     * Check permission for routs, roles, links.
-     *
-     * @return Response or exception
-     */
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-            PermissionController::permission_verify();
-            return $next($request);
-        });
-    }
-
     /**
      * Display a listing of the resource.
      */

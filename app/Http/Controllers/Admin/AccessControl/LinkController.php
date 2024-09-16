@@ -15,19 +15,6 @@ use Inertia\Inertia;
 class LinkController extends Controller
 {
     /**
-     * Check permission for routs, roles, links.
-     *
-     * @return Response or exception
-     */
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-            PermissionController::permission_verify();
-            return $next($request);
-        });
-    }
-
-    /**
      * Display a listing of the resource.
      *
      * @return \Inertia\Response

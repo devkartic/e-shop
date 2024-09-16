@@ -18,20 +18,6 @@ use Inertia\Inertia;
 
 class PermissionController extends Controller
 {
-
-    /**
-     * Check permission for routs, roles, links.
-     *
-     * @return Response or exception
-     */
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-            self::permission_verify();
-            return $next($request);
-        });
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -39,7 +25,7 @@ class PermissionController extends Controller
      */
     public function index(Request $request): \Inertia\Response
     {
-        $role_id = $request->input('role_id')?: Auth::user()->role_id;
+        $role_id = $request->input('role_id') ?: Auth::user()->role_id;
         return Inertia::render('Admin/AccessControl/Permissions/Index', [
             'roles' => Role::all(),
             'filters' => [
@@ -98,8 +84,10 @@ class PermissionController extends Controller
 
         $permissions_routes = array($index_route, $create_route, $edit_route, $destroy_route);
 
-        foreach ($permissions_routes as $route){
-            $find_permission = Permission::where(['role_id' => $role_id, 'link_id' => $link_id, 'route_id' => $route->id]);
+        foreach ($permissions_routes as $route) {
+            $find_permission = Permission::where(
+                ['role_id' => $role_id, 'link_id' => $link_id, 'route_id' => $route->id]
+            );
             if ($route->permission && $find_permission) {
                 Permission::create([
                     'role_id' => $role_id,
@@ -107,13 +95,18 @@ class PermissionController extends Controller
                     'route_id' => $route->id
                 ]);
             } else {
-                if ($find_permission) $find_permission->delete();
+                if ($find_permission) {
+                    $find_permission->delete();
+                }
             }
         }
 
         Modules::cache_forget($role_id);
 
-        return redirect()->route('permissions.index', ['role_id'=> $role_id])->with('message', "Permission updated successfully!");
+        return redirect()->route('permissions.index', ['role_id' => $role_id])->with(
+            'message',
+            "Permission updated successfully!"
+        );
     }
 
     /**
@@ -132,7 +125,14 @@ class PermissionController extends Controller
         if ($has_link) {
             $link_id = $has_link->id;
         }
-        $route_name = self::routes_verify($route_resource_name_array[1]);
+
+        if (sizeof($route_resource_name_array) > 1) {
+            $route_name = $route_resource_name_array[1];
+        } else {
+            $route_name = 'index';
+        }
+
+        $route_name = self::routes_verify($route_name);
         $hasPermission = Permission::has_permission($link_id, $route_name);
         if ($hasPermission) {
             return true;
