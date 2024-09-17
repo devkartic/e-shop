@@ -4,8 +4,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import {useForm} from '@inertiajs/vue3';
+import {computed, ref} from 'vue';
 import CustomButtonSubmit from "@/Components/CustomButtonSubmit.vue";
 import CustomButtonEdit from "@/Components/CustomButtonEdit.vue";
 import Checkbox from "@/Components/Checkbox.vue";
@@ -42,6 +42,11 @@ const closeModal = () => {
     isOpeningModal.value = false;
     form.reset();
 };
+
+const filteredParents = computed(() => {
+    return props.parentItems.filter((item) => item.id !== props.item.id);
+})
+
 </script>
 
 <template>
@@ -59,16 +64,19 @@ const closeModal = () => {
                     <form @submit.prevent="formSubmit">
                         <!-- Parent Category -->
                         <div class="mb-4">
-                            <InputLabel for="module_id" value="Parent" class="block text-sm font-semi-bold mb-2 text-gray-600" />
-                            <select v-model="form.parent_id" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0">
+                            <InputLabel for="module_id" value="Parent"
+                                        class="block text-sm font-semi-bold mb-2 text-gray-600"/>
+                            <select v-model="form.parent_id"
+                                    class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-600 focus:ring-0">
                                 <option value="">Select One</option>
-                                <option v-for="item in parentItems" :value="item.id">{{ item.name }}</option>
+                                <option v-for="item in filteredParents" :value="item.id">{{ item.name }}</option>
                             </select>
-                            <InputError class="mt-2" :message="form.errors.parent_id" />
+                            <InputError class="mt-2" :message="form.errors.parent_id"/>
                         </div>
                         <!-- name -->
                         <div class="mb-4">
-                            <InputLabel for="name" value="Name" class="block text-sm font-semi-bold mb-2 text-gray-600" />
+                            <InputLabel for="name" value="Name"
+                                        class="block text-sm font-semi-bold mb-2 text-gray-600"/>
 
                             <TextInput
                                 id="name"
@@ -80,12 +88,13 @@ const closeModal = () => {
                                 autocomplete="name"
                             />
 
-                            <InputError class="mt-2" :message="form.errors.name" />
+                            <InputError class="mt-2" :message="form.errors.name"/>
 
                         </div>
                         <!-- Order Number -->
                         <div class="mb-4">
-                            <InputLabel for="order_number" value="Order Number" class="block text-sm font-semi-bold mb-2 text-gray-600" />
+                            <InputLabel for="order_number" value="Order Number"
+                                        class="block text-sm font-semi-bold mb-2 text-gray-600"/>
 
                             <TextInput
                                 id="order_number"
@@ -95,19 +104,20 @@ const closeModal = () => {
                                 autocomplete="order_number"
                             />
 
-                            <InputError class="mt-2" :message="form.errors.order_number" />
+                            <InputError class="mt-2" :message="form.errors.order_number"/>
                         </div>
                         <!-- checkbox -->
                         <div class="flex justify-between">
                             <div class="flex">
-                                <Checkbox name="status" v-model:checked="form.status" class="shrink-0 mt-0.5 border-gray-200 rounded-[4px] text-blue-600 focus:ring-blue-500" />
+                                <Checkbox name="status" v-model:checked="form.status"
+                                          class="shrink-0 mt-0.5 border-gray-200 rounded-[4px] text-blue-600 focus:ring-blue-500"/>
                                 <label for="hs-default-checkbox" class="text-sm text-gray-600 ms-3">Is Active?</label>
                             </div>
                         </div>
 
                         <!-- button -->
                         <div class="mt-6 flex justify-end">
-                            <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+                            <SecondaryButton @click="closeModal"> Cancel</SecondaryButton>
 
                             <CustomButtonSubmit
                                 class="ms-3"
