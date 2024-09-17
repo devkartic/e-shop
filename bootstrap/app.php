@@ -14,10 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
-            \App\Http\Middleware\EnsurePermissionIsValid::class,
         ]);
-
-        //
+        $middleware->alias([
+            'permissions' => \App\Http\Middleware\EnsurePermissionIsValid::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

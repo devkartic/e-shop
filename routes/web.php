@@ -11,7 +11,6 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Middleware\EnsurePermissionIsValid;
 
 Route::get('/', function () {
     return Inertia::render('Website/Welcome', [
@@ -27,17 +26,19 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::resource('/roles', RoleController::class);
-    Route::resource('/users', UserController::class);
-    Route::resource('/modules', ModuleController::class);
-    Route::resource('/links', LinkController::class);
-    Route::resource('/permissions', PermissionController::class);
-    Route::resource('/categories', CategoryController::class);
-    Route::resource('/products', ProductController::class);
+    Route::middleware(('permissions'))->group(function (){
+        Route::resource('/roles', RoleController::class);
+        Route::resource('/users', UserController::class);
+        Route::resource('/modules', ModuleController::class);
+        Route::resource('/links', LinkController::class);
+        Route::resource('/permissions', PermissionController::class);
+        Route::resource('/categories', CategoryController::class);
+        Route::resource('/products', ProductController::class);
+    });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-})->middleware(EnsurePermissionIsValid::class);
+});
 
 require __DIR__.'/auth.php';
