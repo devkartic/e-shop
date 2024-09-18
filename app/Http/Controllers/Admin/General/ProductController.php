@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin\General;
 
-use App\Http\Controllers\Admin\AccessControl\PermissionController;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\AccessControl\User;
 use App\Models\Admin\General\Category;
